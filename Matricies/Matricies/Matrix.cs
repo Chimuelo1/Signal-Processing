@@ -5,10 +5,10 @@ using System.Collections.Generic;
 /// </summary>
 namespace Matricies {
     /// <summary>
-    /// A Matrix composed of a List of Lists with doubles as values
+    /// A Matrix composed of an array of arrays with doubles as values
     /// </summary>
     class Matrix {
-        private List<List<double>> matrix;
+        private double[][] matrix;
         private int width, height;
         /// <summary>
         /// Creates a blank Matrix with 0 values of the designated size
@@ -18,29 +18,29 @@ namespace Matricies {
         public Matrix(int rows, int columns) {
             width = columns;
             height = rows;
-            matrix = new List<List<double>>(rows);
+            matrix = new double[rows][];
             for (int i = 0; i < rows; i++) {
-                matrix.Add(new List<double>(columns));
+                matrix[i] = new double[columns];
                 for (int j = 0; j < columns; j++) {
-                    matrix[i].Add(0.0);
+                    matrix[i][j] = 0.0;
                 }
             }
         }
         /// <summary>
-        /// Gets a List of the desired row
+        /// Gets an array of the desired row
         /// </summary>
         /// <param name="index">The index of the row</param>
-        /// <returns>A List containing the values of the row</returns>
-        public List<double> GetRow(int index) {
+        /// <returns>An array containing the values of the row</returns>
+        public double[] GetRow(int index) {
             return matrix[index];
         }
         /// <summary>
-        /// Gets a List of the desired column
+        /// Gets an array of the desired column
         /// </summary>
         /// <param name="index">The index of the column</param>
-        /// <returns>A List containing the values of the column</returns>
-        public List<double> GetColumn(int index) {
-            List<double> column = new List<double>(height);
+        /// <returns>An array containing the values of the column</returns>
+        public double[] GetColumn(int index) {
+            double[] column = new double[height];
             for (int i = 0; i < height; i++) {
                 column[i] = matrix[i][index];
             }
@@ -64,9 +64,9 @@ namespace Matricies {
         /// Prints the Matrix to Console
         /// </summary>
         public void Print() {
-            foreach (List<double> arr in matrix) {
-                for (int i = 0; i < arr.Count; i++) {
-                    if (i < arr.Count - 1)
+            foreach (double[] arr in matrix) {
+                for (int i = 0; i < arr.Length; i++) {
+                    if (i < arr.Length - 1)
                         Console.Write(arr[i] + ", ");
                     else
                         Console.WriteLine(arr[i]);
@@ -77,8 +77,8 @@ namespace Matricies {
         /// Overrides the Matrix[i] operator to allow acces to the Matrix's values 
         /// </summary>
         /// <param name="i">The index to get</param>
-        /// <returns>The List at the given index</returns>
-        public List<double> this[int i] {
+        /// <returns>The array at the given index</returns>
+        public double[] this[int i] {
             get { return matrix[i]; }
             set { matrix[i] = value; }
         }
@@ -137,9 +137,9 @@ namespace Matricies {
         /// <param name="rowA">The index of the first row to swap</param>
         /// <param name="rowB">The index of the second row to swap</param>
         public void SwapRows(int rowA, int rowB) {
-            List<double> temp = this[rowA];
+            double[] temp = this[rowA];
             this[rowA] = this[rowB];
-            this[rowB] = this[rowA];
+            this[rowB] = temp;
         }
         /// <summary>
         /// Combines this Matrix with another
@@ -150,7 +150,6 @@ namespace Matricies {
             if (height != other.GetHeight())
                 throw new InvalidOperationException("Heights do not match");
             int newWidth = width + other.GetWidth();
-            Console.WriteLine(newWidth);
             Matrix newMatrix = new Matrix(height, newWidth);
             for(int y = 0; y < height; y++) {
                 int x = 0;
@@ -167,8 +166,6 @@ namespace Matricies {
             int result = -1;
             double max = -1;
             for(int i = 0; i < height; i++) {
-                Console.WriteLine(String.Format("max: {0}, this[{1}][{2}]: {1}\n", max,i,index, this[i][index]));
-                Print();
                 if(Math.Abs(this[i][index]) > max) {
                     max = Math.Abs(this[i][index]);
                     result = i;
@@ -275,6 +272,10 @@ namespace Matricies {
             }
             return x;
         }
+        /// <summary>
+        /// Implementation of the Direct power method for estimating eigenvalues
+        /// </summary>
+        /// <returns>The strongest eigenvalue</returns>
         public double DirectMethod() {
             Random rand = new Random();
             double[] eigenVector = new double[width];
@@ -299,11 +300,14 @@ namespace Matricies {
             }
             return u;
         }
+        /// <summary>
+        /// Calculates the Inverse Matrix
+        /// </summary>
+        /// <returns>The inverse Matrix</returns>
         public Matrix GetInverse() {
             Matrix c = CombineWith(GetIdentityMatrix());
             for(int j = 0; j < c.GetHeight(); j++) {
                 int p = c.FindPivot(j);
-                Console.WriteLine(String.Format("J: {0}, P: {1}", j, p));
                 if (c[p][j] == 0.0)
                     return null;
                 if (p > j)
@@ -316,7 +320,7 @@ namespace Matricies {
                     if( i != j) {
                         double cIJ = c[i][j];
                         for(int k = 0; k < c.GetWidth(); k++) {
-                            c[i][k] = c[i][k] - (cIJ * (c[j][k]));
+                            c[i][k] = c[i][k] - cIJ * (c[j][k]);
                         }
                     }
                 }
@@ -328,6 +332,34 @@ namespace Matricies {
                 }
             }
             return result;
+        }
+        /// <summary>
+        /// Finds the Determinant of the Matrix
+        /// </summary>
+        /// <returns>The Determinant</returns>
+        public double FindDeterminant() {
+            Matrix m = CopyOf();
+            int r = 0;
+            for(int j = 0; j < width-1; j++) {
+                int p = m.FindPivot(j);
+                if (m[p][j] == 0.0)
+                    return 0.0;
+                if (p > j) {
+                    m.SwapRows(p, j);
+                    r++;
+                }
+                for(int i = j+1; i < height; i++) {
+                    double d = m[i][j] / m[j][j];
+                    for(int k = j; k < width; k++) {
+                        m[i][k] = m[i][k] - (d * m[j][k]);
+                    }
+                }
+            }
+            double val = 1.0;
+            for(int n = 0; n < width; n++) {
+                val *= m[n][n];
+            }
+            return Math.Pow(-1.0, r) * val;
         }
         /// <summary>
         /// Gets a Matrix from a text file delimited by tabs and new lines
@@ -478,8 +510,8 @@ namespace Matricies {
 
         static void Main(string[] args) {
             Matrix m = GetFromFile("data.txt");
-            Console.WriteLine(m.IsSquare());
             m.Print();
+            Console.WriteLine("Determinant: " + m.FindDeterminant());
             Matrix m2 = m.GetInverse();
             m2.Print();
 
