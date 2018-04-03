@@ -26,6 +26,14 @@ namespace Matricies {
                 }
             }
         }
+        public Matrix(Point p) {
+            width = 2;
+            height = 1;
+            matrix = new double[1][];
+            matrix[0] = new double[2];
+            matrix[0][0] = p.GetX();
+            matrix[0][1] = p.GetY();
+        }
         /// <summary>
         /// Gets an array of the desired row
         /// </summary>
