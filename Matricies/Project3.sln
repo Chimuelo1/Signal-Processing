@@ -6,6 +6,9 @@ MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Matricies", "Matricies\Matricies.csproj", "{60ED04C1-1D5F-4224-8CB8-5D5D8CA2BB6A}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Project3", "Project3\Project3.csproj", "{BAF9549A-36C9-4C9B-914D-EF2D04EAFBE4}"
+	ProjectSection(ProjectDependencies) = postProject
+		{60ED04C1-1D5F-4224-8CB8-5D5D8CA2BB6A} = {60ED04C1-1D5F-4224-8CB8-5D5D8CA2BB6A}
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

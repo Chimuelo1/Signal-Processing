@@ -30,6 +30,9 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject>Project3.ComplexNumber</StartupObject>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="Matricies">
       <HintPath>..\Matricies\bin\Debug\Matricies.dll</HintPath>
