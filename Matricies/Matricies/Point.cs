@@ -3,7 +3,7 @@ namespace Matricies {
     /// <summary>
     /// A Point on an (x,y) axis
     /// </summary>
-    class Point {
+    public class Point {
         private double x, y;
         /// <summary>
         /// Creates a new Point

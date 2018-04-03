@@ -4,7 +4,7 @@ namespace Matricies {
     /// <summary>
     /// An unknown class made up of a List of Points
     /// </summary>
-    class UnknownClass {
+    public class UnknownClass {
         private List<Point> points;
         /// <summary>
         /// Creates a new Class made of a List of Points

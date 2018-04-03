@@ -7,7 +7,7 @@ namespace Matricies {
     /// <summary>
     /// A Matrix composed of an array of arrays with doubles as values
     /// </summary>
-    class Matrix {
+    public class Matrix {
         private double[][] matrix;
         private int width, height;
         /// <summary>
