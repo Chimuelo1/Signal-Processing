@@ -20,10 +20,37 @@ namespace Project3 {
             this.imag = imag;
         }
         public override string ToString() {
-            return string.Format("{0} + {1}i", real, imag);
+            if(imag >= 0)
+                return string.Format("{0} + {1}i", real, imag);
+            else
+                return string.Format("{0} - {1}i", real, -imag);
+        }
+        public bool Equals(ComplexNumber other) {
+            return real == other.GetReal() && imag == other.GetImag();
         }
         public ComplexNumber GetConjugate() {
             return new ComplexNumber(real, -imag);
+        }
+        public double GetMagnitude() {
+            return (real * real) + (imag * imag);
+        }
+        public ComplexNumber Sin() {
+            return new ComplexNumber(Math.Sin(real)*Math.Cosh(imag),Math.Cos(real)*Math.Sinh(imag));
+        }
+        public ComplexNumber Cos() {
+            return new ComplexNumber(Math.Cos(real) * Math.Cosh(imag), -(Math.Sin(real) * Math.Sinh(imag)));
+        }
+        public ComplexNumber Tan() {
+            return Sin() / Cos();
+        }
+        public ComplexNumber Sinh() {
+            return new ComplexNumber(Math.Sinh(real) * Math.Cos(imag), Math.Cosh(real) * Math.Sin(imag));
+        }
+        public ComplexNumber Cosh() {
+            return new ComplexNumber(Math.Cosh(real) * Math.Cos(imag), Math.Sinh(real) * Math.Sin(imag));
+        }
+        public ComplexNumber Tanh() {
+            return Sinh() / Cosh();
         }
         public static ComplexNumber operator+ (ComplexNumber a, ComplexNumber b) {
             double real = a.GetReal() + b.GetReal();
@@ -37,15 +64,15 @@ namespace Project3 {
         }
         public static ComplexNumber operator/ (ComplexNumber a, ComplexNumber b) {
             ComplexNumber conj = b.GetConjugate();
-            Console.WriteLine("Conj: " + conj);
             ComplexNumber top = a * conj;
             ComplexNumber bottom = b * conj;
-            Console.WriteLine(top + " / " + bottom);
             if (bottom.GetReal() != 0.0 && bottom.GetImag() == 0.0)
                 return new ComplexNumber(top.GetReal() / bottom.GetReal(), top.GetImag() / bottom.GetReal());
             else
                 return null;
-
+        }
+        public static ComplexNumber operator- (ComplexNumber a) {
+            return new ComplexNumber(-a.GetReal(), -a.GetImag());
         }
 
         static void Main(string[] args) {
