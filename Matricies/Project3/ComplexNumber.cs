@@ -8,7 +8,7 @@ namespace Project3 {
         /// </summary>
         /// <param name="real">The real value</param>
         /// <param name="imag">The imaginary value</param>
-        public ComplexNumber(double real, double imag) {
+        public unsafe ComplexNumber(double real, double imag) {
             this.real = real;
             this.imag = imag;
         }
@@ -121,6 +121,9 @@ namespace Project3 {
         public ComplexNumber Tanh() {
             return Sinh() / Cosh();
         }
+        public ComplexNumber Exp() {
+            return new ComplexNumber(Math.Exp(real) * Math.Cos(imag), Math.Exp(real) * Math.Sin(imag));
+        }
         /// <summary>
         /// Adds 2 Complex Numbers together
         /// </summary>
@@ -174,15 +177,6 @@ namespace Project3 {
         /// <returns>The negated Complex Number</returns>
         public static ComplexNumber operator- (ComplexNumber a) {
             return new ComplexNumber(-a.GetReal(), -a.GetImag());
-        }
-
-        static void Main(string[] args) {
-            ComplexNumber a = new ComplexNumber(2, 3);
-            ComplexNumber b = new ComplexNumber(4, -5);
-            Console.WriteLine("({0}) / ({1}) \n= {2}", a, b, a / b);
-
-            Console.WriteLine("\n\nPress any key to close");
-            Console.ReadKey();
         }
     }
 }
