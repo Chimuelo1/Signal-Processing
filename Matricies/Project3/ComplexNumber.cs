@@ -8,7 +8,7 @@ namespace Project3 {
         /// </summary>
         /// <param name="real">The real value</param>
         /// <param name="imag">The imaginary value</param>
-        public unsafe ComplexNumber(double real, double imag) {
+        public ComplexNumber(double real, double imag) {
             this.real = real;
             this.imag = imag;
         }
