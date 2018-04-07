@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Matricies;
+using System;
 
 namespace Project3 {
     class Fourier {
@@ -27,34 +28,79 @@ namespace Project3 {
             }
             return result;
         }
+        public static ComplexNumber[] FFT(double[] signal) {
+            ComplexNumber[] complexSignal = new ComplexNumber[signal.Length];
+            for(int i = 0; i < signal.Length; i++) {
+                complexSignal[i] = new ComplexNumber(signal[i], 0.0);
+            }
+            return FFT(complexSignal);
+        }
+        public static Matrix F(int[] s, int numSamples) {
+            Matrix m = new Matrix(numSamples, s.Length+1);
+            for(int j = 0; j < s.Length; j++) {
+                for (int i = 0; i < numSamples; i++) {
+                    double sum = 0.0;
+                    double t = (double)i / numSamples;
+                    if(j == 0)
+                        m[i][0] = t;
+                    for (int k = 1; k <= s[j]; k++) {
+                        double val = (Math.Sin(2.0 * Math.PI * (2.0 * k - 1.0) * t)) / (2.0 * k - 1.0);
+                        sum += val;
+                    }
+                    m[i][j+1] = sum;
+                }
+            }
+            m.WriteToFile("..\\..\\fMatrix.csv");
+            return m;
+        }
+        public static Matrix G(int[] s, int numSamples) {
+            Matrix m = new Matrix(numSamples, s.Length + 1);
+            for (int j = 0; j < s.Length; j++) {
+                for (int i = 0; i < numSamples; i++) {
+                    double sum = 0.0;
+                    double t = (double)i / numSamples;
+                    if (j == 0)
+                        m[i][0] = t;
+                    for (int k = 1; k <= s[j]; k++) {
+                        double val = (Math.Sin(2.0 * Math.PI * (2.0 * k) * t)) / (2.0 * k);
+                        sum += val;
+                    }
+                    m[i][j + 1] = sum;
+                }
+            }
+            m.WriteToFile("..\\..\\gMatrix.csv");
+            return m;
+        }
 
         public static void Main(string[] args) {
-            double[] freq = {
-                26160.0,
-                19011.0,
-                18757.0,
-                18405.0,
-                17888.0,
-                14720.0,
-                14285.0,
-                17018.0,
-                18014.0,
-                17119.0,
-                16400.0,
-                17497.0,
-                17846.0,
-                15700.0,
-                17636.0,
-                17181.0,
-            };
-            ComplexNumber[] x = new ComplexNumber[freq.Length];
-            for (int i = 0; i < freq.Length; i++) {
-                x[i] = new ComplexNumber(freq[i], 0);
+            int[] s = new int[] { 3, 10, 50 };
+            int num = 512;
+            Matrix fMat = F(s, num);
+            Matrix gMat = G(s, num);
+            double[][] signals = new double[fMat.GetWidth() -1+gMat.GetWidth()-1][];
+            for(int i = 0; i < fMat.GetWidth()-1; i++) {
+                signals[i] = fMat.GetColumn(i + 1);
             }
-            x = FFT(x);
-            for(int i = 0; i < x.Length; i++) {
-                Console.WriteLine(String.Format("{0}\t{1}\n", i,x[i]));
+            for(int i = 0; i < gMat.GetWidth()-1; i++) {
+                signals[i + fMat.GetWidth() - 1] = gMat.GetColumn(i + 1);
             }
+            ComplexNumber[][] comps = new ComplexNumber[signals.Length][];
+            double[][] psd = new double[signals.Length][];
+            for(int i = 0; i < signals.Length;i++) {
+                comps[i] = FFT(signals[i]);
+                psd[i] = new double[comps[i].Length];
+                for (int j = 0; j < comps[i].Length; j++) {
+                    psd[i][j] = Math.Pow(comps[i][j].GetPhase(),2.0);
+                }
+            }
+            foreach(double d in psd[2]) {
+                Console.WriteLine(d);
+            }
+            Console.WriteLine("-------------------------------");
+            foreach (double d in psd[5]) {
+                Console.WriteLine(d);
+            }
+
             Console.WriteLine("\n\nPress any key to close");
             Console.ReadKey();
         }

@@ -16,6 +16,12 @@
             <param name="rows">The number of rows in the new Matrix</param>
             <param name="columns">The number of columns in the new Matrix</param>
         </member>
+        <member name="M:Matricies.Matrix.#ctor(Matricies.Point)">
+            <summary>
+            Creates a Matrix based arount an (x,y) Point
+            </summary>
+            <param name="p">The Point</param>
+        </member>
         <member name="M:Matricies.Matrix.GetRow(System.Int32)">
             <summary>
             Gets an array of the desired row
@@ -46,6 +52,12 @@
             <summary>
             Prints the Matrix to Console
             </summary>
+        </member>
+        <member name="M:Matricies.Matrix.WriteToFile(System.String)">
+            <summary>
+            Writes this Matrix to a CSV file
+            </summary>
+            <param name="fileName">The name of the file</param>
         </member>
         <member name="P:Matricies.Matrix.Item(System.Int32)">
             <summary>

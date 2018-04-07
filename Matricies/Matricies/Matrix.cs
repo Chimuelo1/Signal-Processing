@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-/// <summary>
-/// Various Matrix operations
-/// </summary>
+
 namespace Matricies {
     /// <summary>
     /// A Matrix composed of an array of arrays with doubles as values
@@ -26,6 +24,10 @@ namespace Matricies {
                 }
             }
         }
+        /// <summary>
+        /// Creates a Matrix based arount an (x,y) Point
+        /// </summary>
+        /// <param name="p">The Point</param>
         public Matrix(Point p) {
             width = 2;
             height = 1;
@@ -80,6 +82,21 @@ namespace Matricies {
                         Console.WriteLine(arr[i]);
                 }
             }
+        }
+        /// <summary>
+        /// Writes this Matrix to a CSV file
+        /// </summary>
+        /// <param name="fileName">The name of the file</param>
+        public void WriteToFile(string fileName) {
+            using(System.IO.StreamWriter file = new System.IO.StreamWriter(fileName)) {
+                foreach(double[] arr in matrix) {
+                    foreach(double d in arr) {
+                        file.Write(d + ",");
+                    }
+                    file.WriteLine();
+                }
+            }
+
         }
         /// <summary>
         /// Overrides the Matrix[i] operator to allow acces to the Matrix's values 
