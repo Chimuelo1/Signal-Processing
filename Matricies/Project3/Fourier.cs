@@ -24,7 +24,7 @@ namespace Project3 {
                 ComplexNumber even = evenArr[k];
                 ComplexNumber odd = oddArr[k];
                 result[k] = even + (wk * odd);
-                result[k + N / 2] = even - wk * odd;
+                result[k + N / 2] = even - (wk * odd);
             }
             return result;
         }
@@ -53,6 +53,19 @@ namespace Project3 {
             m.WriteToFile("..\\..\\fMatrix.csv");
             return m;
         }
+        public static Matrix F(int s, int numSamples) {
+            Matrix m = new Matrix(numSamples, 1);
+            for (int i = 0; i < numSamples; i++) {
+                double sum = 0.0;
+                double t = (double)i / numSamples;
+                for (int k = 1; k <= s; k++) {
+                    sum += (Math.Sin(2.0 * Math.PI * (2.0 * k - 1.0) * t)) / (2.0 * k - 1.0);
+                }
+                m[i][0] = sum;
+            }
+            m.WriteToFile("..\\..\\f2Matrix.csv");
+            return m;
+        }
         public static Matrix G(int[] s, int numSamples) {
             Matrix m = new Matrix(numSamples, s.Length + 1);
             for (int j = 0; j < s.Length; j++) {
@@ -71,35 +84,70 @@ namespace Project3 {
             m.WriteToFile("..\\..\\gMatrix.csv");
             return m;
         }
-
-        public static void Main(string[] args) {
-            int[] s = new int[] { 3, 10, 50 };
-            int num = 512;
-            Matrix fMat = F(s, num);
-            Matrix gMat = G(s, num);
-            double[][] signals = new double[fMat.GetWidth() -1+gMat.GetWidth()-1][];
-            for(int i = 0; i < fMat.GetWidth()-1; i++) {
-                signals[i] = fMat.GetColumn(i + 1);
-            }
-            for(int i = 0; i < gMat.GetWidth()-1; i++) {
-                signals[i + fMat.GetWidth() - 1] = gMat.GetColumn(i + 1);
-            }
-            ComplexNumber[][] comps = new ComplexNumber[signals.Length][];
-            double[][] psd = new double[signals.Length][];
-            for(int i = 0; i < signals.Length;i++) {
-                comps[i] = FFT(signals[i]);
-                psd[i] = new double[comps[i].Length];
-                for (int j = 0; j < comps[i].Length; j++) {
-                    psd[i][j] = Math.Pow(comps[i][j].GetPhase(),2.0);
+        public static Matrix G(int s, int numSamples) {
+            Matrix m = new Matrix(numSamples, 1);
+            for (int i = 0; i < numSamples; i++) {
+                double sum = 0.0;
+                double t = (double)i / numSamples;
+                for (int k = 1; k <= s; k++) {
+                    sum += (Math.Sin(2.0 * Math.PI * (2.0 * k) * t)) / (2.0 * k);
                 }
+                m[i][0] = sum;
             }
-            foreach(double d in psd[2]) {
+            m.WriteToFile("..\\..\\f2Matrix.csv");
+            return m;
+        }
+        public static double[] V(int freq, int numSamples) {
+            double[] result = new double[numSamples];
+            for(int i = 0; i < numSamples; i++) {
+                double t = (double)i / numSamples;
+                result[i] = Math.Sin(2.0 * freq * Math.PI*t);
+            }
+            return result;
+        }
+        public static double[] X(int numSamples) {
+            double[] result = new double[numSamples];
+            double[] v1 = V(13, numSamples);
+            double[] v2 = V(31, numSamples);
+            for(int i = 0; i < numSamples; i++) {
+                result[i] = v1[i] + v2[i];
+            }
+            return result;
+        }
+        public static double[] Y(int numSamples) {
+            double[] result = new double[numSamples];
+            double[] v1 = V(13, numSamples);
+            double[] v2 = V(31, numSamples);
+            for (int i = 0; i < numSamples; i++) {
+                result[i] = v1[i] * v2[i];
+            }
+            return result;
+        }
+        public static double[] PSD(double[] signal) {
+            ComplexNumber[] fft = FFT(signal);
+            double[] result = new double[signal.Length];
+            for(int i = 0; i < signal.Length; i++) {
+                result[i] = Math.Pow(fft[i].GetMagnitude(), 2.0);
+            }
+            return result;
+        }
+        public static void Main(string[] args) {
+            //Values of F(t)
+            double[] f3 = F(3, 512).GetColumn(0);
+            double[] f10 = F(10, 512).GetColumn(0);
+            double[] f50 = F(50, 512).GetColumn(0);
+            double[] f100 = F(100, 512).GetColumn(0);
+            
+            //Values of G(t)
+            double[] g3 = G(3, 512).GetColumn(0);
+            double[] g10 = G(10, 512).GetColumn(0);
+            double[] g50 = G(50, 512).GetColumn(0);
+            double[] g100 = G(100, 512).GetColumn(0);
+
+            double[] x = PSD(X(512));
+            double[] y = PSD(Y(512));
+            foreach(double d in y)
                 Console.WriteLine(d);
-            }
-            Console.WriteLine("-------------------------------");
-            foreach (double d in psd[5]) {
-                Console.WriteLine(d);
-            }
 
             Console.WriteLine("\n\nPress any key to close");
             Console.ReadKey();

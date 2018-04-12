@@ -70,7 +70,7 @@ namespace Project3 {
         /// </summary>
         /// <returns>The Magnitude of the Complex Number</returns>
         public double GetMagnitude() {
-            return (real * real) + (imag * imag);
+            return Math.Sqrt((real * real) + (imag * imag));
         }
         /// <summary>
         /// Gets the Phase of the Complex Number
@@ -142,7 +142,7 @@ namespace Project3 {
         /// <param name="b">The second Complex Number</param>
         /// <returns></returns>
         public static ComplexNumber operator- (ComplexNumber a, ComplexNumber b) {
-            return a + -b;
+            return new ComplexNumber(a.GetReal() - b.GetReal(), a.GetImag() - b.GetImag());
         }
         /// <summary>
         /// Multiplies two Complex Numbers together
