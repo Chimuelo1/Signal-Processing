@@ -170,6 +170,9 @@ namespace Project3 {
             else
                 return null;
         }
+        public static ComplexNumber operator/ (ComplexNumber a, double b) {
+            return new ComplexNumber(a.real / b, a.imag / b);
+        }
         /// <summary>
         /// Negates a Complex Number
         /// </summary>

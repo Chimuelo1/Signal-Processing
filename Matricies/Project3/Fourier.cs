@@ -28,6 +28,23 @@ namespace Project3 {
             }
             return result;
         }
+        public static ComplexNumber[] InverseFFT(ComplexNumber[] signal) {
+            ComplexNumber[] result = new ComplexNumber[signal.Length];
+            for (int i = 0; i < signal.Length; i++)
+                result[i] = signal[i].GetConjugate();
+            result = FFT(result);
+            for(int i = 0; i < signal.Length; i++) {
+                result[i] /= signal.Length;
+            }
+            return result;
+        }
+        public static ComplexNumber[] InverseFFT(double[] signal) {
+            ComplexNumber[] arr = new ComplexNumber[signal.Length];
+            for(int i = 0; i < signal.Length; i++) {
+                arr[i] = new ComplexNumber(signal[i], 0.0);
+            }
+            return InverseFFT(arr);
+        }
         public static ComplexNumber[] FFT(double[] signal) {
             ComplexNumber[] complexSignal = new ComplexNumber[signal.Length];
             for(int i = 0; i < signal.Length; i++) {
@@ -146,9 +163,27 @@ namespace Project3 {
 
             double[] x = PSD(X(512));
             double[] y = PSD(Y(512));
-            foreach(double d in y)
+            double[] test = new double[] {26160.0,
+19011.0,
+18757.0,
+18405.0,
+17888.0,
+14720.0,
+14285.0,
+17018.0,
+18014.0,
+17119.0,
+16400.0,
+17497.0,
+17846.0,
+15700.0,
+17636.0,
+17181.0};
+            foreach(ComplexNumber d in FFT(test))
                 Console.WriteLine(d);
-
+            Console.WriteLine("----------------");
+            foreach (ComplexNumber d in InverseFFT(FFT(test))) 
+                Console.WriteLine(d);
             Console.WriteLine("\n\nPress any key to close");
             Console.ReadKey();
         }
