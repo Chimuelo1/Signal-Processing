@@ -2,7 +2,7 @@
 
 namespace Project3 {
     class ComplexNumber {
-        double real, imag;
+        private double real, imag;
         /// <summary>
         /// Creates a new ComplexNumber based on a real value and an imaginary value
         /// </summary>
@@ -55,8 +55,10 @@ namespace Project3 {
         /// </summary>
         /// <param name="other">The other Complex number</param>
         /// <returns>True if they are equivalent, false otherwise</returns>
-        public bool Equals(ComplexNumber other) {
-            return real == other.GetReal() && imag == other.GetImag();
+        public override bool Equals(Object other) {
+            if(other is ComplexNumber o)
+                return real == o.GetReal() && imag == o.GetImag();
+            return false;
         }
         /// <summary>
         /// Gets the Conjugate of the Complex number
@@ -142,7 +144,7 @@ namespace Project3 {
         /// <param name="b">The second Complex Number</param>
         /// <returns></returns>
         public static ComplexNumber operator- (ComplexNumber a, ComplexNumber b) {
-            return new ComplexNumber(a.GetReal() - b.GetReal(), a.GetImag() - b.GetImag());
+            return a + -b;
         }
         /// <summary>
         /// Multiplies two Complex Numbers together
@@ -180,6 +182,9 @@ namespace Project3 {
         /// <returns>The negated Complex Number</returns>
         public static ComplexNumber operator- (ComplexNumber a) {
             return new ComplexNumber(-a.GetReal(), -a.GetImag());
+        }
+        public static implicit operator ComplexNumber(double d) {
+            return new ComplexNumber(d, 0.0);
         }
     }
 }

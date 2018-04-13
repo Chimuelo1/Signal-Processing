@@ -1,0 +1,135 @@
+﻿using System;
+using Matricies;
+
+namespace Project3 {
+    public class Functions {
+        /// <summary>
+        /// The F function with a number of different S values
+        /// </summary>
+        /// <param name="s">The S values</param>
+        /// <param name="numSamples">The number of samples to use</param>
+        /// <returns>A matrix with the first column being the T values used</returns>
+        public static Matrix F(int[] s, int numSamples) {
+            Matrix m = new Matrix(numSamples, s.Length + 1);
+            for (int j = 0; j < s.Length; j++) {
+                for (int i = 0; i < numSamples; i++) {
+                    double sum = 0.0;
+                    double t = (double)i / numSamples;
+                    if (j == 0)
+                        m[i][0] = t;
+                    for (int k = 1; k <= s[j]; k++) {
+                        double val = (Math.Sin(2.0 * Math.PI * (2.0 * k - 1.0) * t)) / (2.0 * k - 1.0);
+                        sum += val;
+                    }
+                    m[i][j + 1] = sum;
+                }
+            }
+            m.WriteToFile("..\\..\\fMatrix.csv");
+            return m;
+        }
+        /// <summary>
+        /// The F function with only 1 S value
+        /// </summary>
+        /// <param name="s">The current S value</param>
+        /// <param name="numSamples">The number of samples to use</param>
+        /// <returns>The result in the 1st(and only) column of a Matrix</returns>
+        public static Matrix F(int s, int numSamples) {
+            Matrix m = new Matrix(numSamples, 1);
+            for (int i = 0; i < numSamples; i++) {
+                double sum = 0.0;
+                double t = (double)i / numSamples;
+                for (int k = 1; k <= s; k++) {
+                    sum += (Math.Sin(2.0 * Math.PI * (2.0 * k - 1.0) * t)) / (2.0 * k - 1.0);
+                }
+                m[i][0] = sum;
+            }
+            m.WriteToFile("..\\..\\f2Matrix.csv");
+            return m;
+        }
+        /// <summary>
+        /// The G function with a number of different S values
+        /// </summary>
+        /// <param name="s">The S values</param>
+        /// <param name="numSamples">The number of samples to use</param>
+        /// <returns>A matrix with the first column being the T values used</returns>
+        public static Matrix G(int[] s, int numSamples) {
+            Matrix m = new Matrix(numSamples, s.Length + 1);
+            for (int j = 0; j < s.Length; j++) {
+                for (int i = 0; i < numSamples; i++) {
+                    double sum = 0.0;
+                    double t = (double)i / numSamples;
+                    if (j == 0)
+                        m[i][0] = t;
+                    for (int k = 1; k <= s[j]; k++) {
+                        double val = (Math.Sin(2.0 * Math.PI * (2.0 * k) * t)) / (2.0 * k);
+                        sum += val;
+                    }
+                    m[i][j + 1] = sum;
+                }
+            }
+            m.WriteToFile("..\\..\\gMatrix.csv");
+            return m;
+        }
+        /// <summary>
+        /// The G function with only 1 S value
+        /// </summary>
+        /// <param name="s">The current S value</param>
+        /// <param name="numSamples">The number of samples to use</param>
+        /// <returns>The result in the 1st(and only) column of a Matrix</returns>
+        public static Matrix G(int s, int numSamples) {
+            Matrix m = new Matrix(numSamples, 1);
+            for (int i = 0; i < numSamples; i++) {
+                double sum = 0.0;
+                double t = (double)i / numSamples;
+                for (int k = 1; k <= s; k++) {
+                    sum += (Math.Sin(2.0 * Math.PI * (2.0 * k) * t)) / (2.0 * k);
+                }
+                m[i][0] = sum;
+            }
+            m.WriteToFile("..\\..\\f2Matrix.csv");
+            return m;
+        }
+        /// <summary>
+        /// The V function 
+        /// </summary>
+        /// <param name="freq">The current frequency</param>
+        /// <param name="numSamples">The number of samples to use</param>
+        /// <returns>An array containing the result of V</returns>
+        public static double[] V(int freq, int numSamples) {
+            double[] result = new double[numSamples];
+            for (int i = 0; i < numSamples; i++) {
+                double t = (double)i / numSamples;
+                result[i] = Math.Sin(2.0 * freq * Math.PI * t);
+            }
+            return result;
+        }
+        /// <summary>
+        /// The X function
+        /// </summary>
+        /// <param name="numSamples">The number of samples to use</param>
+        /// <returns>An array containing the result of X</returns>
+        public static double[] X(int numSamples) {
+            double[] result = new double[numSamples];
+            double[] v1 = V(13, numSamples);
+            double[] v2 = V(31, numSamples);
+            for (int i = 0; i < numSamples; i++) {
+                result[i] = v1[i] + v2[i];
+            }
+            return result;
+        }
+        /// <summary>
+        /// The Y function
+        /// </summary>
+        /// <param name="numSamples">The number of samples to use</param>
+        /// <returns>An array containing the result of Y</returns>
+        public static double[] Y(int numSamples) {
+            double[] result = new double[numSamples];
+            double[] v1 = V(13, numSamples);
+            double[] v2 = V(31, numSamples);
+            for (int i = 0; i < numSamples; i++) {
+                result[i] = v1[i] * v2[i];
+            }
+            return result;
+        }
+    }
+}

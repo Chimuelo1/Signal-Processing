@@ -7,8 +7,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Matricies", "Matricies\Matr
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Project3", "Project3\Project3.csproj", "{BAF9549A-36C9-4C9B-914D-EF2D04EAFBE4}"
 	ProjectSection(ProjectDependencies) = postProject
+		{CC4BF87B-DD33-4F3E-9684-E0FC93919571} = {CC4BF87B-DD33-4F3E-9684-E0FC93919571}
 		{60ED04C1-1D5F-4224-8CB8-5D5D8CA2BB6A} = {60ED04C1-1D5F-4224-8CB8-5D5D8CA2BB6A}
 	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "QueueTips", "Queue\QueueTips.csproj", "{CC4BF87B-DD33-4F3E-9684-E0FC93919571}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -24,6 +27,10 @@ Global
 		{BAF9549A-36C9-4C9B-914D-EF2D04EAFBE4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BAF9549A-36C9-4C9B-914D-EF2D04EAFBE4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BAF9549A-36C9-4C9B-914D-EF2D04EAFBE4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CC4BF87B-DD33-4F3E-9684-E0FC93919571}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CC4BF87B-DD33-4F3E-9684-E0FC93919571}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CC4BF87B-DD33-4F3E-9684-E0FC93919571}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CC4BF87B-DD33-4F3E-9684-E0FC93919571}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
