@@ -38,6 +38,9 @@
     <Reference Include="Matricies">
       <HintPath>..\Matricies\bin\Debug\Matricies.dll</HintPath>
     </Reference>
+    <Reference Include="NAudio, Version=1.8.4.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\NAudio.1.8.4\lib\net35\NAudio.dll</HintPath>
+    </Reference>
     <Reference Include="Queue">
       <HintPath>..\Queue\bin\Debug\Queue.dll</HintPath>
     </Reference>
@@ -62,6 +65,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

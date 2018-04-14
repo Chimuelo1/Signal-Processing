@@ -1,6 +1,7 @@
 ﻿using Matricies;
 using QueueTips;
 using System;
+using NAudio.Wave.SampleProviders;
 
 namespace Project3 {
     class Fourier {
@@ -51,7 +52,6 @@ namespace Project3 {
             return result;
         }
         public static ComplexNumber[][] FFT2D(ComplexNumber[][] signal) {
-            Console.WriteLine("Starting fft");
             ComplexNumber[][] result = new ComplexNumber[signal.Length][];
             for (int i = 0; i < result.Length; i++)
                 result[i] = new ComplexNumber[signal[i].Length];
@@ -66,12 +66,10 @@ namespace Project3 {
                     result[j][k] = col[j];
                 }
             }
-            Console.WriteLine("done columns");
             //rows
             for(int n = 0; n < signal.Length; n++) {
-                result[n] = FFT(signal[n]);
+                result[n] = FFT(result[n]);
             }
-            Console.WriteLine("done rows");
             return result;
 
         }
@@ -86,7 +84,7 @@ namespace Project3 {
             result = FFT2D(result);
             for (int i = 0; i < signal.Length; i++) {
                 for (int j = 0; j < signal[i].Length; j++) {
-                    result[i][j] /= signal[0].Length;
+                    result[i][j] /= signal[0].Length*signal.Length;
                 }
             }
             return result;
@@ -142,15 +140,19 @@ namespace Project3 {
             return InverseFFT(result);
         }
         public static void Main(string[] args) {
-            Image image = new Image("smile.jpg");
-
-          //  mat = InverseFFT2D(mat);
-           // Console.WriteLine("done IFFT");
-           for(int i = 0; i < 2; i++)
-                image = new Image(InverseFFT2D(image.GetMatrix()));
-            Console.WriteLine("done applying crap");
+            Image image = new Image("fat.jpg");
+            // Console.WriteLine("done IFFT");
+            double[] data = Functions.ReadWav("mytoneA.wav");
+            //foreach(double d in data)
+            // Console.WriteLine(d);
+            // Functions.WriteWav("generated.wav", data);
+            /*for (int i = 0; i < 10000; i++) {
+                image = new Image(InverseFFT2D(FFT2D(image)));
+                Console.Write(i/ 10000.0 * 100.0 + "%\r");
+            }*/
+            // image = new Image(InverseFFT2D((image)));
+            //image = new Image((InverseFFT2D(image)));
             image.Save("sad.jpg");
-            
             Console.WriteLine("\n\nPress any key to close");
             Console.ReadKey();
         }

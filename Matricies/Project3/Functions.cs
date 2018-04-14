@@ -1,5 +1,8 @@
 ﻿using System;
 using Matricies;
+using NAudio.Wave;
+using System.Collections.Generic;
+using NAudio.Wave.SampleProviders;
 
 namespace Project3 {
     public class Functions {
@@ -130,6 +133,29 @@ namespace Project3 {
                 result[i] = v1[i] * v2[i];
             }
             return result;
+        }
+        public static double[] ReadWav(string fileName) {
+            List<double> result = new List<double>();
+            AudioFileReader reader = new AudioFileReader(fileName);
+            float[] buffer = new float[reader.WaveFormat.SampleRate];
+            int read;
+            do {
+                read = reader.Read(buffer, 0, buffer.Length);
+                for (int i = 0; i < read; i++) {
+                    result.Add(buffer[i]);
+                }
+            } while (read > 0);
+            return result.ToArray();
+        }
+        public static void WriteWav(string fileName, double[] data) {
+            WaveFormat format = new WaveFormat(44100,32,1);
+            WaveFileWriter writer = new WaveFileWriter(fileName,format);
+            byte[] bytes = new byte[data.Length];
+            for (int i = 0; i < data.Length; i++) {
+                float f = (float)data[i];
+                writer.WriteSample(f);
+                
+            }
         }
     }
 }
