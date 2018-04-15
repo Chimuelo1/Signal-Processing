@@ -139,20 +139,46 @@ namespace Project3 {
             }
             return InverseFFT(result);
         }
+        public static ComplexNumber[] CrossCorrelation(ComplexNumber[] x, ComplexNumber[] y) {
+            ComplexNumber[] Y = y;
+            if (y.Length != x.Length)
+                Y = Functions.PadWithZeroes(Y, x.Length);
+            int shiftAmt = 100;
+            ComplexNumber[] shift = new ComplexNumber[Y.Length+shiftAmt];
+            for(int i = 0; i < shift.Length; i++) {
+                if (i < shiftAmt)
+                    shift[i] = 0;
+                else {
+                    shift[i] = Y[i - shiftAmt];
+                }
+            }
+            for (int i = 0; i < Y.Length; i++) {
+                Y[i] = shift[i];
+            }
+            ComplexNumber[] X = FFT(x);
+            Y = FFT(Y);
+            for (int i = 0; i < Y.Length; i++)
+                Y[i] = Y[i].GetConjugate();
+            ComplexNumber[] XY = new ComplexNumber[X.Length];
+            for(int i = 0; i < X.Length; i++) {
+                XY[i] = X[i] * Y[i];
+            }
+            return InverseFFT(XY);
+         }
+        public static ComplexNumber[] CrossCorrelation(double[] x, double[] y) {
+            return CrossCorrelation(ConvertArray(x), ConvertArray(y));
+        }
         public static void Main(string[] args) {
-            Image image = new Image("fat.jpg");
-            // Console.WriteLine("done IFFT");
-            double[] data = Functions.ReadWav("mytoneA.wav");
-            //foreach(double d in data)
-            // Console.WriteLine(d);
-            // Functions.WriteWav("generated.wav", data);
-            /*for (int i = 0; i < 10000; i++) {
-                image = new Image(InverseFFT2D(FFT2D(image)));
-                Console.Write(i/ 10000.0 * 100.0 + "%\r");
-            }*/
-            // image = new Image(InverseFFT2D((image)));
-            //image = new Image((InverseFFT2D(image)));
-            image.Save("sad.jpg");
+            double[][] data = Functions.GetDataFromFile("..\\..\\rangeTestDataSpring2018.txt");
+            double[] transmitted = data[0];
+            double[] recieved = data[1];
+            double[] test1 = new double[] { 1, 2, 3, 4, 5, 6, 7,8 };
+            double[] test2 = new double[] { 1, 2 };
+            ComplexNumber[] result = CrossCorrelation(recieved, transmitted);
+            foreach(ComplexNumber c in result) {
+                Console.WriteLine(c.GetMagnitude());
+            }
+            Console.WriteLine(Functions.CalcDistance(1500,15.7)+"m");
             Console.WriteLine("\n\nPress any key to close");
             Console.ReadKey();
         }

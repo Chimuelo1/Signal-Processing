@@ -9,7 +9,7 @@ namespace Project3 {
             image = new Bitmap(width, height);
             for (int i = 0; i < width; i++) {
                 for (int j = 0; j < height; j++) {
-                    ChangeColor(i, j, Color.White);
+                    ChangeColor(i, j, Color.Black);
                 }
             }
         }
@@ -50,6 +50,30 @@ namespace Project3 {
                 }
             }
             return matrix;
+        }
+        public static Image GetImageA() {
+            Image a = new Image(512, 512);
+            for(int row = 0; row < a.Height; row++) {
+                for(int col = 0; col < a.Width; col++) {
+                    if(row >= 180 && row < 320 && col >= 220 && col < 330)
+                        a.Set(col,row, Color.White);
+                    if (row >= ((320+180) / 2) - 45 && row < ((320 + 180) / 2) + 45 && col >= 330 - 30 && col < 330)
+                        a.Set(col, row, Color.Black);
+                }
+            }
+            return a;
+        }
+        public static Image GetImageB() {
+            Image b = new Image(512, 512);
+            for (int row = 0; row < b.Height; row++) {
+                for (int col = 0; col < b.Width; col++) {
+                    if (row < 120 && col < 30)
+                        b.Set(col, row, Color.White);
+                    if (row >= 15 && row < 105 && col >= 15 && col < 30)
+                        b.Set(col, row, Color.Black);
+                }
+            }
+            return b;
         }
     }
 }

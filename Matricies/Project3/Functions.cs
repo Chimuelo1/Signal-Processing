@@ -4,6 +4,7 @@ using NAudio.Wave;
 using System.Collections.Generic;
 using NAudio.Wave.SampleProviders;
 
+
 namespace Project3 {
     public class Functions {
         /// <summary>
@@ -156,6 +157,50 @@ namespace Project3 {
                 writer.WriteSample(f);
                 
             }
+        }
+        public static double[][] GetDataFromFile(string fileName) {
+            List<double>[] data = new List<double>[2];
+            data[0] = new List<double>();
+            data[1] = new List<double>();
+            bool inReturn = false;
+            string[] file = System.IO.File.ReadAllLines(fileName);
+            for(int i = 0; i < file.Length; i++) {
+                if(file[i].Contains("sample") || file[i].Trim().Length == 0) {
+                    if (file[i].Contains("1024"))
+                        inReturn = true;
+                    continue;
+                }
+                double d = double.Parse(file[i].Trim());
+                if (inReturn)
+                    data[1].Add(d); //Recieved values
+                else
+                    data[0].Add(d); //Transmitted values
+            }
+            double[][] result = new double[2][];
+            for (int i = 0; i < data.Length; i++)
+                result[i] = data[i].ToArray();
+            return result;
+        }
+        public static ComplexNumber[] PadWithZeroes(double[] arr, int desiredLength) {
+            return PadWithZeroes(Fourier.ConvertArray(arr), desiredLength);
+        }
+        public static ComplexNumber[] PadWithZeroes(ComplexNumber[] arr, int desiredLength) {
+            ComplexNumber[] result = new ComplexNumber[desiredLength];
+            int j = 0;
+            int index = (desiredLength - arr.Length) / 2;
+            for (int i = 0; i < desiredLength; i++) {
+                if (i >= index && i < index + arr.Length) {
+                    result[i] = arr[j];
+                    j++;
+                }
+                else
+                    result[i] = 0;
+            }
+            return result;
+        }
+        public static double CalcDistance(double velocity, double time) {
+            double v = velocity / 2;
+            return v * time;
         }
     }
 }

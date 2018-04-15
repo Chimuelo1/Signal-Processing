@@ -1,7 +1,7 @@
 ﻿using System;
 
 namespace Project3 {
-    class ComplexNumber {
+    public class ComplexNumber {
         private double real, imag;
         /// <summary>
         /// Creates a new ComplexNumber based on a real value and an imaginary value
@@ -45,8 +45,10 @@ namespace Project3 {
         /// </summary>
         /// <returns>a + bi</returns>
         public override string ToString() {
-            if(imag >= 0)
+            if (imag > 0)
                 return string.Format("{0} + {1}i", real, imag);
+            else if (imag == 0)
+                return real.ToString();
             else
                 return string.Format("{0} - {1}i", real, -imag);
         }
