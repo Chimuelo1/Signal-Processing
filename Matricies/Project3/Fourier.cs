@@ -18,12 +18,6 @@ namespace Project3 {
         public static ComplexNumber[] FFT(double[] signal) {
             return FFT(ConvertArray(signal));
         }
-        public static ComplexNumber[] LowPass(double[] signal) {
-            return LowPass(ConvertArray(signal));
-        }
-        public static ComplexNumber[] HighPass(double[] signal) {
-            return HighPass(ConvertArray(signal));
-        }
         public static ComplexNumber[] FFT(ComplexNumber[] signal) {
             int N = signal.Length;
             if (N == 1)
@@ -113,32 +107,6 @@ namespace Project3 {
             }
             return result;
         }
-        public static ComplexNumber[] LowPass(ComplexNumber[] signal) {
-            ComplexNumber[] result = FFT(signal);
-            for(int i = 0; i < result.Length; i++) {
-                if (i > 6)
-                    result[i] = 0;
-            }
-            return InverseFFT(result); 
-        }
-        public static ComplexNumber[][] LowPass2D(ComplexNumber[][] signal) {
-            ComplexNumber[][] result = FFT2D(signal);
-            for(int i = 0; i < result.Length; i++) {
-                for(int j = 0; j < result[0].Length; j++) {
-                    if (i > 6)
-                        result[i][j] = 0;
-                }
-            }
-            return InverseFFT2D(result);
-        }
-        public static ComplexNumber[] HighPass(ComplexNumber[] signal) {
-            ComplexNumber[] result = FFT(signal);
-            for (int i = 0; i < result.Length; i++) {
-                if (i < 6)
-                    result[i] = 0;
-            }
-            return InverseFFT(result);
-        }
         public static ComplexNumber[] CrossCorrelation(ComplexNumber[] x, ComplexNumber[] y) {
             ComplexNumber[] Y = y;
             if (y.Length != x.Length)
@@ -164,21 +132,27 @@ namespace Project3 {
                 XY[i] = X[i] * Y[i];
             }
             return InverseFFT(XY);
-         }
+        }
+        public static ComplexNumber[][] CrossCorrelation2D(ComplexNumber[][] x, ComplexNumber[][] y) {
+            return null;
+        }
         public static ComplexNumber[] CrossCorrelation(double[] x, double[] y) {
             return CrossCorrelation(ConvertArray(x), ConvertArray(y));
         }
+        public static ComplexNumber[] CrossConvolution(ComplexNumber[] signal, ComplexNumber[] filter) {
+            ComplexNumber[] signalFFT = FFT(signal);
+            ComplexNumber[] filterFFT = Functions.PadWithZeroes(filter, signal.Length);
+            filterFFT = FFT(filterFFT);
+            ComplexNumber[] result = new ComplexNumber[signal.Length];
+            for(int i = 0; i < signal.Length; i++) {
+                result[i] = signalFFT[i] * filterFFT[i];
+            }
+            return InverseFFT(result);
+         }
         public static void Main(string[] args) {
             double[][] data = Functions.GetDataFromFile("..\\..\\rangeTestDataSpring2018.txt");
-            double[] transmitted = data[0];
-            double[] recieved = data[1];
-            double[] test1 = new double[] { 1, 2, 3, 4, 5, 6, 7,8 };
-            double[] test2 = new double[] { 1, 2 };
-            ComplexNumber[] result = CrossCorrelation(recieved, transmitted);
-            foreach(ComplexNumber c in result) {
-                Console.WriteLine(c.GetMagnitude());
-            }
-            Console.WriteLine(Functions.CalcDistance(1500,15.7)+"m");
+            double dist = Functions.CalcDistance(1500, 15.7);
+            Console.WriteLine(dist);
             Console.WriteLine("\n\nPress any key to close");
             Console.ReadKey();
         }

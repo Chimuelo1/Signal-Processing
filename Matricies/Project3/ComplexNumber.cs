@@ -52,6 +52,11 @@ namespace Project3 {
             else
                 return string.Format("{0} - {1}i", real, -imag);
         }
+
+        public static explicit operator double(ComplexNumber v) {
+            return v.GetReal();
+        }
+
         /// <summary>
         /// Checks to see if 2 ComplexNumbers are equivalant
         /// </summary>
@@ -187,6 +192,19 @@ namespace Project3 {
         }
         public static implicit operator ComplexNumber(double d) {
             return new ComplexNumber(d, 0.0);
+        }
+        public static ComplexNumber[][] MatrixMult(ComplexNumber[][] a, ComplexNumber[][] b) {
+            if (a[0].Length != b.Length)
+                throw new ArgumentException("A's width must be equal to B's height");
+            ComplexNumber[][] result = new ComplexNumber[a.Length][];
+            for(int i = 0; i < a.Length; i++) {
+                for(int j = 0; j < b[0].Length; j++) {
+                    for(int y = 0; y < a.Length; y++) {
+                        result[i][j] = result[i][j] + (a[i][y] * b[y][j]);
+                    }
+                }
+            }
+            return result;
         }
     }
 }
