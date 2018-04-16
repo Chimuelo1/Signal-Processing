@@ -57,6 +57,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ComplexNumber.cs" />
+    <Compile Include="Filter.cs" />
     <Compile Include="Fourier.cs" />
     <Compile Include="Functions.cs" />
     <Compile Include="Image.cs" />
