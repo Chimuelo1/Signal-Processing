@@ -5,27 +5,14 @@ using NAudio.Wave.SampleProviders;
 
 namespace Project3 {
     class Fourier {
-        public static ComplexNumber[] ConvertArray(double[] orig) {
-            ComplexNumber[] result = new ComplexNumber[orig.Length];
-            for (int i = 0; i < orig.Length; i++) {
-                result[i] = orig[i];
-            }
-            return result;
-        }
-        public static ComplexNumber[] InverseFFT(double[] signal) {
-            return InverseFFT(ConvertArray(signal));
-        }
-        public static ComplexNumber[] FFT(double[] signal) {
-            return FFT(ConvertArray(signal));
-        }
-        public static ComplexNumber[] FFT(ComplexNumber[] signal) {
+        public static Signal FFT(Signal signal) {
             int N = signal.Length;
             if (N == 1)
                 return signal;
             if ((N & (N - 1)) != 0)
                 throw new ArgumentOutOfRangeException("signal length must be a power of 2");
-            ComplexNumber[] evenArr = new ComplexNumber[N / 2];
-            ComplexNumber[] oddArr = new ComplexNumber[N / 2];
+            Signal evenArr = new Signal(N/2);
+            Signal oddArr = new Signal(N/2);
             for (int i = 0; i < N / 2; i++) {
                 evenArr[i] = signal[2 * i];
             }
@@ -34,7 +21,7 @@ namespace Project3 {
                 oddArr[i] = signal[2 * i + 1];
             }
             oddArr = FFT(oddArr);
-            ComplexNumber[] result = new ComplexNumber[N];
+            Signal result = new Signal(N);
             for (int k = 0; k < N / 2; k++) {
                 double w = -2.0 * k * Math.PI / N;
                 ComplexNumber wk = new ComplexNumber(Math.Cos(w), Math.Sin(w));
@@ -89,30 +76,18 @@ namespace Project3 {
         public static ComplexNumber[][] FFT2D(Image image) {
             return FFT2D(image.GetMatrix());
         }
-        public static ComplexNumber[] InverseFFT(ComplexNumber[] signal) {
-            ComplexNumber[] result = new ComplexNumber[signal.Length];
-            for (int i = 0; i < signal.Length; i++)
-                result[i] = signal[i].GetConjugate();
+        public static Signal InverseFFT(Signal signal) {
+            Signal result = signal.GetConjugate();
             result = FFT(result);
-            for(int i = 0; i < signal.Length; i++) {
-                result[i] /= signal.Length;
-            }
+            result /= signal.Length;
             return result;
         }
-        public static double[] PSD(double[] signal) {
-            ComplexNumber[] fft = FFT(signal);
-            double[] result = new double[signal.Length];
-            for(int i = 0; i < signal.Length; i++) {
-                result[i] = Math.Pow(fft[i].GetMagnitude(), 2.0);
-            }
-            return result;
-        }
-        public static ComplexNumber[] CrossCorrelation(ComplexNumber[] x, ComplexNumber[] y) {
-            ComplexNumber[] Y = y;
+        public static Signal CrossCorrelation(Signal x, Signal y) {
+            Signal Y = y;
             if (y.Length != x.Length)
-                Y = Functions.PadWithZeroes(Y, x.Length);
+                Y = y.PadWithZeros(x.Length);
             int shiftAmt = 100;
-            ComplexNumber[] shift = new ComplexNumber[Y.Length+shiftAmt];
+            Signal shift = new Signal(Y.Length+shiftAmt);
             for(int i = 0; i < shift.Length; i++) {
                 if (i < shiftAmt)
                     shift[i] = 0;
@@ -123,11 +98,9 @@ namespace Project3 {
             for (int i = 0; i < Y.Length; i++) {
                 Y[i] = shift[i];
             }
-            ComplexNumber[] X = FFT(x);
-            Y = FFT(Y);
-            for (int i = 0; i < Y.Length; i++)
-                Y[i] = Y[i].GetConjugate();
-            ComplexNumber[] XY = new ComplexNumber[X.Length];
+            Signal X = FFT(x);
+            Y = FFT(Y).GetConjugate();
+            Signal XY = new Signal(X.Length);
             for(int i = 0; i < X.Length; i++) {
                 XY[i] = X[i] * Y[i];
             }
@@ -136,14 +109,11 @@ namespace Project3 {
         public static ComplexNumber[][] CrossCorrelation2D(ComplexNumber[][] x, ComplexNumber[][] y) {
             return null;
         }
-        public static ComplexNumber[] CrossCorrelation(double[] x, double[] y) {
-            return CrossCorrelation(ConvertArray(x), ConvertArray(y));
-        }
-        public static ComplexNumber[] CrossConvolution(ComplexNumber[] signal, ComplexNumber[] filter) {
-            ComplexNumber[] signalFFT = FFT(signal);
-            ComplexNumber[] filterFFT = Functions.PadWithZeroes(filter, signal.Length);
+        public static Signal CrossConvolution(Signal signal, Signal filter) {
+            Signal signalFFT = FFT(signal);
+            Signal filterFFT = filter.PadWithZeros(signal.Length);
             filterFFT = FFT(filterFFT);
-            ComplexNumber[] result = new ComplexNumber[signal.Length];
+            Signal result = new Signal(signal.Length);
             for(int i = 0; i < signal.Length; i++) {
                 result[i] = signalFFT[i] * filterFFT[i];
             }
@@ -151,8 +121,7 @@ namespace Project3 {
          }
         public static void Main(string[] args) {
             double[][] data = Functions.GetDataFromFile("..\\..\\rangeTestDataSpring2018.txt");
-            double dist = Functions.CalcDistance(1500, 15.7);
-            Console.WriteLine(dist);
+            FFT(Functions.F(50,512).GetColumn(0));
             Console.WriteLine("\n\nPress any key to close");
             Console.ReadKey();
         }

@@ -56,17 +56,6 @@ namespace Project3 {
         public static explicit operator double(ComplexNumber v) {
             return v.GetReal();
         }
-
-        /// <summary>
-        /// Checks to see if 2 ComplexNumbers are equivalant
-        /// </summary>
-        /// <param name="other">The other Complex number</param>
-        /// <returns>True if they are equivalent, false otherwise</returns>
-        public override bool Equals(Object other) {
-            if(other is ComplexNumber o)
-                return real == o.GetReal() && imag == o.GetImag();
-            return false;
-        }
         /// <summary>
         /// Gets the Conjugate of the Complex number
         /// </summary>

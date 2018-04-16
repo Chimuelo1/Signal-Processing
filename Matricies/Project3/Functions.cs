@@ -181,23 +181,6 @@ namespace Project3 {
                 result[i] = data[i].ToArray();
             return result;
         }
-        public static ComplexNumber[] PadWithZeroes(double[] arr, int desiredLength) {
-            return PadWithZeroes(Fourier.ConvertArray(arr), desiredLength);
-        }
-        public static ComplexNumber[] PadWithZeroes(ComplexNumber[] arr, int desiredLength) {
-            ComplexNumber[] result = new ComplexNumber[desiredLength];
-            int j = 0;
-            int index = (desiredLength - arr.Length) / 2;
-            for (int i = 0; i < desiredLength; i++) {
-                if (i >= index && i < index + arr.Length) {
-                    result[i] = arr[j];
-                    j++;
-                }
-                else
-                    result[i] = 0;
-            }
-            return result;
-        }
         public static double CalcDistance(double velocity, double time) {
             double v = velocity / 2;
             return v * time;

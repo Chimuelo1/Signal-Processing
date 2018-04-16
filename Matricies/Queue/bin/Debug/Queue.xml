@@ -4,35 +4,6 @@
         <name>Queue</name>
     </assembly>
     <members>
-        <member name="T:QueueTips.LimitedQueue`1">
-            <summary>
-            A Queue specified for only having a limited number of items in the queue
-            </summary>
-            <typeparam name="T">The type of items in the queue</typeparam>
-        </member>
-        <member name="P:QueueTips.LimitedQueue`1.MaxSize">
-            <summary>
-            The max number of items allowed in the queue
-            </summary>
-        </member>
-        <member name="M:QueueTips.LimitedQueue`1.#ctor(System.Int32)">
-            <summary>
-            Creates a new queue with a limited number of items
-            </summary>
-            <param name="maxSize">The limit of items allowed in the queue</param>
-        </member>
-        <member name="M:QueueTips.LimitedQueue`1.Enqueue(`0)">
-            <summary>
-            Enqueues an item into the queue, dequeues if the length becomes larger than the MaxSize
-            </summary>
-            <param name="value">The value to enqueue</param>
-        </member>
-        <member name="M:QueueTips.LimitedQueue`1.Dequeue">
-            <summary>
-            Dequeues the largest item from the queue
-            </summary>
-            <returns>The value removed</returns>
-        </member>
         <member name="T:QueueTips.Queue`1">
             <summary>
             A Queue data structure

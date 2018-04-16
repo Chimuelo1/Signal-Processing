@@ -5,16 +5,34 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace Project3 {
-    class Filter {
-        public static ComplexNumber[] Averaging(int p) {
-            ComplexNumber[] result = new ComplexNumber[p];
+    class Filter : Signal {
+        public Filter(double[] frequencies) : base(frequencies) {
+
+        }
+        public Filter(ComplexNumber[] frequencies) : base(frequencies) {
+
+        }
+        public Filter(int length) :base(length) {
+            
+        }
+        public static implicit operator Filter(ComplexNumber[] arr) {
+            return new Filter(arr);
+        }
+        public static implicit operator Filter(double[] arr) {
+            return new Filter(arr);
+        }
+        public static implicit operator ComplexNumber[] (Filter s) {
+            return s.Frequencies;
+        }
+        public static Filter Averaging(int p) {
+            Filter result = new Filter(p);
             for(int i = 0; i < p; i++) {
                 result[i] = 1.0 / p;
             }
             return result;
         }
-        public static ComplexNumber[] LowPass(int len, int h, int s) {
-            ComplexNumber[] result = new ComplexNumber[len];
+        public static Filter LowPass(int len, int h, int s) {
+            Filter result = new Filter(len);
             for (int i = 0; i < len; i++) {
                 if (i == 0) {
                     result[i] = (2.0 * h) / s;
@@ -25,8 +43,8 @@ namespace Project3 {
             }
             return result;
         }
-        public static ComplexNumber[] HighPass(int len, int m, int s) {
-            ComplexNumber[] result = new ComplexNumber[len];
+        public static Filter HighPass(int len, int m, int s) {
+            Filter result = new Filter(len);
             for (int i = 0; i < len; i++) {
                 if (i == 0) {
                     result[i] = (s - 2.0 * m) / s;
@@ -37,8 +55,8 @@ namespace Project3 {
             }
             return result;
         }
-        public static ComplexNumber[] BandPass(int len, int m, int h, int s) {
-            ComplexNumber[] result = new ComplexNumber[len];
+        public static Filter BandPass(int len, int m, int h, int s) {
+            Filter result = new Filter(len);
             for (int i = 0; i < len; i++) {
                 if (i == 0) {
                     result[i] = (2.0 * (h - m)) / s;
@@ -49,8 +67,8 @@ namespace Project3 {
             }
             return result;
         }
-        public static ComplexNumber[] Notch(int len, int h, int m, int s) {
-            ComplexNumber[] result = new ComplexNumber[len];
+        public static Filter Notch(int len, int h, int m, int s) {
+            Filter result = new Filter(len);
             for (int i = 0; i < len; i++) {
                 if (i == 0) {
                     result[i] = (s - (2.0 * (h - m))) / s;
