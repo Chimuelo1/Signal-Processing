@@ -135,6 +135,14 @@ namespace Project3 {
             }
             return result;
         }
+        public static Signal H(int numSamples, double c) {
+            Signal signal = new Signal(numSamples);
+            for(int i = 0; i < numSamples; i++) {
+                double t = ((double)i / numSamples) - c;
+                signal[i] = Math.Sin(20.0 * Math.PI * t);
+            }
+            return signal;
+        }
         public static double[] ReadWav(string fileName) {
             List<double> result = new List<double>();
             AudioFileReader reader = new AudioFileReader(fileName);
@@ -182,8 +190,7 @@ namespace Project3 {
             return result;
         }
         public static double CalcDistance(double velocity, double time) {
-            double v = velocity / 2;
-            return v * time;
+            return velocity * time / 2;
         }
     }
 }

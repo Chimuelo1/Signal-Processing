@@ -86,7 +86,7 @@ namespace Project3 {
             Signal Y = y;
             if (y.Length != x.Length)
                 Y = y.PadWithZeros(x.Length);
-            int shiftAmt = 100;
+            int shiftAmt = 0;
             Signal shift = new Signal(Y.Length+shiftAmt);
             for(int i = 0; i < shift.Length; i++) {
                 if (i < shiftAmt)
@@ -110,8 +110,8 @@ namespace Project3 {
             return null;
         }
         public static Signal CrossConvolution(Signal signal, Signal filter) {
-            Signal signalFFT = FFT(signal);
             Signal filterFFT = filter.PadWithZeros(signal.Length);
+            Signal signalFFT = FFT(signal);
             filterFFT = FFT(filterFFT);
             Signal result = new Signal(signal.Length);
             for(int i = 0; i < signal.Length; i++) {
@@ -119,9 +119,42 @@ namespace Project3 {
             }
             return InverseFFT(result);
          }
+        public static Signal Low(Signal s) {
+            Signal fft = FFT(s);
+            for(int i = 7; i < s.Length; i++) {
+                fft[i] = 0;
+            }
+            return InverseFFT(fft);
+        }
+        public static Signal High(Signal s) {
+            Signal fft = FFT(s);
+            for (int i = 0; i < 7; i++) {
+                fft[i] = 0;
+            }
+            return InverseFFT(fft);
+        }
+        public static Signal Band(Signal s) {
+            Signal fft = FFT(s);
+            for(int i = 0; i < s.Length; i++) {
+                if (i < 5 || i > 8)
+                    fft[i] = 0;
+            }
+            return InverseFFT(fft);
+        }
+        public static Signal Notch(Signal s) {
+            Signal fft = FFT(s);
+            for (int i = 0; i < s.Length; i++) {
+                if (!(i < 5 || i > 8))
+                    fft[i] = 0;
+            }
+            return InverseFFT(fft);
+        }
         public static void Main(string[] args) {
             double[][] data = Functions.GetDataFromFile("..\\..\\rangeTestDataSpring2018.txt");
-            FFT(Functions.F(50,512).GetColumn(0));
+            Signal f50 = Functions.F(50, 512).GetColumn(0);
+            Signal filtered = CrossConvolution(f50, Filter.LowPass(f50.Length, 7, 50));
+            foreach(ComplexNumber n in Notch(f50))
+                Console.WriteLine(n.GetReal());
             Console.WriteLine("\n\nPress any key to close");
             Console.ReadKey();
         }
