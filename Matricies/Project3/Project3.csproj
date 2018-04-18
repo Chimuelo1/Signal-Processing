@@ -35,9 +35,6 @@
     <StartupObject>Project3.Fourier</StartupObject>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Matricies">
-      <HintPath>..\Matricies\bin\Debug\Matricies.dll</HintPath>
-    </Reference>
     <Reference Include="NAudio, Version=1.8.4.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\NAudio.1.8.4\lib\net35\NAudio.dll</HintPath>
     </Reference>
@@ -63,6 +60,7 @@
     <Compile Include="Image.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Signal.cs" />
+    <Compile Include="Signal2D.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

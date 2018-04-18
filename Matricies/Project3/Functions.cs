@@ -1,9 +1,8 @@
 ﻿using System;
-using Matricies;
 using NAudio.Wave;
 using System.Collections.Generic;
 using NAudio.Wave.SampleProviders;
-
+using System.Linq;
 
 namespace Project3 {
     public class Functions {
@@ -13,8 +12,8 @@ namespace Project3 {
         /// <param name="s">The S values</param>
         /// <param name="numSamples">The number of samples to use</param>
         /// <returns>A matrix with the first column being the T values used</returns>
-        public static Matrix F(int[] s, int numSamples) {
-            Matrix m = new Matrix(numSamples, s.Length + 1);
+        public static double[][] F(int[] s, int numSamples) {
+            Signal2D m = new Signal2D(numSamples, s.Length + 1);
             for (int j = 0; j < s.Length; j++) {
                 for (int i = 0; i < numSamples; i++) {
                     double sum = 0.0;
@@ -28,8 +27,7 @@ namespace Project3 {
                     m[i][j + 1] = sum;
                 }
             }
-            m.WriteToFile("..\\..\\fMatrix.csv");
-            return m;
+            return (double[][])m;
         }
         /// <summary>
         /// The F function with only 1 S value
@@ -37,8 +35,8 @@ namespace Project3 {
         /// <param name="s">The current S value</param>
         /// <param name="numSamples">The number of samples to use</param>
         /// <returns>The result in the 1st(and only) column of a Matrix</returns>
-        public static Matrix F(int s, int numSamples) {
-            Matrix m = new Matrix(numSamples, 1);
+        public static double[][] F(int s, int numSamples) {
+            Signal2D m = new Signal2D(numSamples, 1);
             for (int i = 0; i < numSamples; i++) {
                 double sum = 0.0;
                 double t = (double)i / numSamples;
@@ -47,8 +45,7 @@ namespace Project3 {
                 }
                 m[i][0] = sum;
             }
-            m.WriteToFile("..\\..\\f2Matrix.csv");
-            return m;
+            return (double[][])m;
         }
         /// <summary>
         /// The G function with a number of different S values
@@ -56,8 +53,8 @@ namespace Project3 {
         /// <param name="s">The S values</param>
         /// <param name="numSamples">The number of samples to use</param>
         /// <returns>A matrix with the first column being the T values used</returns>
-        public static Matrix G(int[] s, int numSamples) {
-            Matrix m = new Matrix(numSamples, s.Length + 1);
+        public static double[][] G(int[] s, int numSamples) {
+            Signal2D m = new Signal2D(numSamples, s.Length + 1);
             for (int j = 0; j < s.Length; j++) {
                 for (int i = 0; i < numSamples; i++) {
                     double sum = 0.0;
@@ -71,8 +68,7 @@ namespace Project3 {
                     m[i][j + 1] = sum;
                 }
             }
-            m.WriteToFile("..\\..\\gMatrix.csv");
-            return m;
+            return (double[][])m;
         }
         /// <summary>
         /// The G function with only 1 S value
@@ -80,8 +76,8 @@ namespace Project3 {
         /// <param name="s">The current S value</param>
         /// <param name="numSamples">The number of samples to use</param>
         /// <returns>The result in the 1st(and only) column of a Matrix</returns>
-        public static Matrix G(int s, int numSamples) {
-            Matrix m = new Matrix(numSamples, 1);
+        public static double[][] G(int s, int numSamples) {
+            Signal2D m = new Signal2D(numSamples, 1);
             for (int i = 0; i < numSamples; i++) {
                 double sum = 0.0;
                 double t = (double)i / numSamples;
@@ -90,8 +86,7 @@ namespace Project3 {
                 }
                 m[i][0] = sum;
             }
-            m.WriteToFile("..\\..\\f2Matrix.csv");
-            return m;
+            return (double[][])m;
         }
         /// <summary>
         /// The V function 
@@ -154,17 +149,28 @@ namespace Project3 {
                     result.Add(buffer[i]);
                 }
             } while (read > 0);
+            reader.Close();
             return result.ToArray();
         }
-        public static void WriteWav(string fileName, double[] data) {
-            WaveFormat format = new WaveFormat(44100,32,1);
+        public static void PlayWav(string fileName) {
+            WaveFileReader reader = new WaveFileReader(fileName);
+            float[] buffer = new float[reader.WaveFormat.SampleRate];
+            WaveOut waveOut = new WaveOut();
+            waveOut.Init(reader);
+
+            waveOut.Play();
+            while (waveOut.PlaybackState == PlaybackState.Playing)
+                System.Threading.Thread.Sleep(1000);
+            reader.Close();
+        }
+        public static void WriteWav(string fileName, Signal data, int rate) {
+            float[] dataFloat = new float[data.Length];
+            for (int i = 0; i < data.Length; i++)
+                dataFloat[i] = (float)data[i].GetReal();
+            WaveFormat format = new WaveFormat(rate,24,1);
             WaveFileWriter writer = new WaveFileWriter(fileName,format);
-            byte[] bytes = new byte[data.Length];
-            for (int i = 0; i < data.Length; i++) {
-                float f = (float)data[i];
-                writer.WriteSample(f);
-                
-            }
+            writer.WriteSamples(dataFloat,0,data.Length);
+            writer.Close();
         }
         public static double[][] GetDataFromFile(string fileName) {
             List<double>[] data = new List<double>[2];
