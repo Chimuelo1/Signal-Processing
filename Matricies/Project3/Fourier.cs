@@ -1,6 +1,4 @@
-﻿using Matricies;
-using QueueTips;
-using System;
+﻿using System;
 using NAudio.Wave.SampleProviders;
 
 namespace Project3 {
@@ -32,13 +30,13 @@ namespace Project3 {
             }
             return result;
         }
-        public static ComplexNumber[][] FFT2D(ComplexNumber[][] signal) {
-            ComplexNumber[][] result = new ComplexNumber[signal.Length][];
-            for (int i = 0; i < result.Length; i++)
+        public static Signal2D FFT2D(Signal2D signal) {
+            Signal2D result = new Signal2D(signal.Height, signal.Width);
+            for (int i = 0; i < result.Height; i++)
                 result[i] = new ComplexNumber[signal[i].Length];
             //columns
             for(int k = 0; k < signal[0].Length; k++) {
-                ComplexNumber[] col = new ComplexNumber[signal.Length];
+                ComplexNumber[] col = new ComplexNumber[signal.Height];
                 for(int j = 0; j < col.Length; j++) {
                     col[j] = signal[j][k];
                 }
@@ -48,24 +46,18 @@ namespace Project3 {
                 }
             }
             //rows
-            for(int n = 0; n < signal.Length; n++) {
+            for(int n = 0; n < signal.Height; n++) {
                 result[n] = FFT(result[n]);
             }
             return result;
 
         }
-        public static ComplexNumber[][] InverseFFT2D(ComplexNumber[][] signal) {
-            ComplexNumber[][] result = new ComplexNumber[signal.Length][];
-            for(int i = 0; i < signal.Length; i++) {
-                result[i] = new ComplexNumber[signal[i].Length];
-                for(int j = 0; j < signal[i].Length; j++) {
-                    result[i][j] = signal[i][j].GetConjugate();
-                }
-            }
+        public static Signal2D InverseFFT2D(Signal2D signal) {
+            Signal2D result = signal.GetConjugate();
             result = FFT2D(result);
-            for (int i = 0; i < signal.Length; i++) {
-                for (int j = 0; j < signal[i].Length; j++) {
-                    result[i][j] /= signal[0].Length*signal.Length;
+            for (int i = 0; i < signal.Height; i++) {
+                for (int j = 0; j < signal.Width; j++) {
+                    result[i][j] /= signal.Width*signal.Height;
                 }
             }
             return result;
@@ -151,10 +143,32 @@ namespace Project3 {
         }
         public static void Main(string[] args) {
             double[][] data = Functions.GetDataFromFile("..\\..\\rangeTestDataSpring2018.txt");
-            Signal f50 = Functions.F(50, 512).GetColumn(0);
+            Signal f50 = ((Signal2D)Functions.F(50, 512)).GetColumn(0);
             Signal filtered = CrossConvolution(f50, Filter.LowPass(f50.Length, 7, 50));
-            foreach(ComplexNumber n in Notch(f50))
-                Console.WriteLine(n.GetReal());
+            //foreach(ComplexNumber n in High(f50))
+            //Console.WriteLine(n);
+            double[] tone = Functions.ReadWav("myToneA.wav");
+            Signal arr = ((Signal2D)Functions.G(50, 512)).GetColumn(0);
+            double[] a = new double[arr.Length];
+            for(int i = 0; i < arr.Length; i++) {
+                a[i] = arr[i].GetReal();
+            }
+            double[] t = new double[65536];
+            for (int i = 0; i < t.Length; i++)
+                t[i] = tone[i];
+            /*Functions.WriteWav("High.wav",High(t), 45000);
+            Functions.WriteWav("Low.wav", High(t), 45000);
+            Functions.WriteWav("Band.wav", Band(t), 45000);
+            Functions.WriteWav("Notch.wav", Notch(t), 45000);*/
+            // Functions.PlayWav("te.wav");
+          //  Functions.PlayWav("Low.wav");
+            Functions.PlayWav("High.wav");
+            Console.WriteLine("High");
+            Functions.PlayWav("Band.wav");
+            Console.WriteLine("Band");
+            Functions.PlayWav("Notch.wav");
+            Console.WriteLine("Notch");
+
             Console.WriteLine("\n\nPress any key to close");
             Console.ReadKey();
         }
