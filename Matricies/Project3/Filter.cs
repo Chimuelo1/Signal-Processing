@@ -106,17 +106,16 @@ namespace Project3 {
         /// <returns>The Filtered Signal</returns>
         public static Signal Band(Signal s) {
             Signal fft = Fourier.FFT(s);
-            int x = 0;
-            for (int i = 0; i < s.Length; i++) {
-                if (i % 2 != 0) {
-                    x++;
-                    if (x < 5 || x > 8)
-                        fft[i] = 0;
-                }
-                else
-                    fft[i] = 0;
+            Signal result = new Signal(s.Length);
+            for (int i = 0; i < result.Length; i++)
+                result[i] = 0;
+            for (int i = 9; i < 16; i+=2) {
+                result[i] = fft[i];
             }
-            return Fourier.InverseFFT(fft);
+            for (int i = 497; i < 504; i+=2) {
+                result[i] = fft[i];
+            }
+            return Fourier.InverseFFT(result);
         }
         /// <summary>
         /// Applies a Notch Filter to a Signal
@@ -125,17 +124,18 @@ namespace Project3 {
         /// <returns>The Filtered Signal</returns>
         public static Signal Notch(Signal s) {
             Signal fft = Fourier.FFT(s);
-            int x = 0;
-            for (int i = 0; i < s.Length; i++) {
-                if (i % 2 != 0) {
-                    x++;
-                    if (x >= 5 && x <= 8)
-                        fft[i] = 0;
-                }
-                else
-                    fft[i] = 0;
+            Signal result = new Signal(s.Length);
+            for (int i = 0; i < result.Length; i++)
+                result[i] = fft[i];
+            for (int i = 9; i < 16; i++) {
+                result[i] = 0;
+                Console.WriteLine(i);
             }
-            return Fourier.InverseFFT(fft);
+            for (int i = 497; i < 504; i++) {
+                result[i] = 0;
+                Console.WriteLine(i);
+            }
+            return Fourier.InverseFFT(result);
         }
     }
 }
