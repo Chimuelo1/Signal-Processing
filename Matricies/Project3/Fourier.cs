@@ -143,7 +143,7 @@ namespace Project3 {
             Signal s = Signal.GetFromFile("..\\..\\tonedataA1.txt");
             // s = s.PSD();
             s /= 100;
-            Signal f = Functions.F(50, 512).GetColumn(0);
+            Signal f = Functions.F(50, 512);
             f = Filter.High(f);
             foreach(ComplexNumber n in f)
                 Console.WriteLine(n.Real);

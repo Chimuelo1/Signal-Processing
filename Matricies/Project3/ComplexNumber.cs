@@ -3,8 +3,8 @@
 namespace Project3 {
     public class ComplexNumber {
         private double real, imag;
-        public double Real { get; }
-        public double Imag { get; }
+        public double Real { get { return real; } }
+        public double Imag { get { return imag; } }
         /// <summary>
         /// Creates a new ComplexNumber based on a real value and an imaginary value
         /// </summary>

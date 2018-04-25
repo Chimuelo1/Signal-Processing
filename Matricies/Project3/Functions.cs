@@ -10,66 +10,20 @@ namespace Project3 {
     /// </summary>
     public class Functions {
         /// <summary>
-        /// The F function with a number of different S values
-        /// </summary>
-        /// <param name="s">The S values</param>
-        /// <param name="numSamples">The number of samples to use</param>
-        /// <returns>A matrix with the first column being the T values used</returns>
-        public static Signal2D F(int[] s, int numSamples) {
-            Signal2D m = new Signal2D(numSamples, s.Length + 1);
-            for (int j = 0; j < s.Length; j++) {
-                for (int i = 0; i < numSamples; i++) {
-                    double sum = 0.0;
-                    double t = (double)i / numSamples;
-                    if (j == 0)
-                        m[i][0] = t;
-                    for (int k = 1; k <= s[j]; k++) {
-                        double val = (Math.Sin(2.0 * Math.PI * (2.0 * k - 1.0) * t)) / (2.0 * k - 1.0);
-                        sum += val;
-                    }
-                    m[i][j + 1] = sum;
-                }
-            }
-            return m;
-        }
-        /// <summary>
         /// The F function with only 1 S value
         /// </summary>
         /// <param name="s">The current S value</param>
         /// <param name="numSamples">The number of samples to use</param>
         /// <returns>The result in the 1st(and only) column of a Matrix</returns>
-        public static Signal2D F(int s, int numSamples) {
-            Signal2D m = new Signal2D(numSamples, 1);
+        public static Signal F(int s, int numSamples) {
+            Signal m = new Signal(numSamples);
             for (int i = 0; i < numSamples; i++) {
                 double sum = 0.0;
                 double t = (double)i / numSamples;
                 for (int k = 1; k <= s; k++) {
                     sum += (Math.Sin(2.0 * Math.PI * (2.0 * k - 1.0) * t)) / (2.0 * k - 1.0);
                 }
-                m[i][0] = sum;
-            }
-            return m;
-        }
-        /// <summary>
-        /// The G function with a number of different S values
-        /// </summary>
-        /// <param name="s">The S values</param>
-        /// <param name="numSamples">The number of samples to use</param>
-        /// <returns>A matrix with the first column being the T values used</returns>
-        public static Signal2D G(int[] s, int numSamples) {
-            Signal2D m = new Signal2D(numSamples, s.Length + 1);
-            for (int j = 0; j < s.Length; j++) {
-                for (int i = 0; i < numSamples; i++) {
-                    double sum = 0.0;
-                    double t = (double)i / numSamples;
-                    if (j == 0)
-                        m[i][0] = t;
-                    for (int k = 1; k <= s[j]; k++) {
-                        double val = (Math.Sin(2.0 * Math.PI * (2.0 * k) * t)) / (2.0 * k);
-                        sum += val;
-                    }
-                    m[i][j + 1] = sum;
-                }
+                m[i] = sum;
             }
             return m;
         }
@@ -79,17 +33,17 @@ namespace Project3 {
         /// <param name="s">The current S value</param>
         /// <param name="numSamples">The number of samples to use</param>
         /// <returns>The result in the 1st(and only) column of a Matrix</returns>
-        public static Signal2D G(int s, int numSamples) {
-            Signal2D m = new Signal2D(numSamples, 1);
+        public static Signal G(int s, int numSamples) {
+            Signal m = new Signal(numSamples);
             for (int i = 0; i < numSamples; i++) {
                 double sum = 0.0;
                 double t = (double)i / numSamples;
                 for (int k = 1; k <= s; k++) {
                     sum += (Math.Sin(2.0 * Math.PI * (2.0 * k) * t)) / (2.0 * k);
                 }
-                m[i][0] = sum;
+                m[i] = sum;
             }
-            return (double[][])m;
+            return m;
         }
         /// <summary>
         /// The V function 
