@@ -139,14 +139,7 @@ namespace Project3 {
          }
         
         public static void Main(string[] args) {
-            Signal[] data = Functions.GetDataFromFile("..\\..\\rangeTestDataSpring2018.txt");
-            Signal s = Signal.GetFromFile("..\\..\\tonedataA1.txt");
-            // s = s.PSD();
-            s /= 100;
-            Signal f = Functions.F(50, 512);
-            f = Filter.High(f);
-            foreach(ComplexNumber n in f)
-                Console.WriteLine(n.Real);
+            Functions.RunFilter(Functions.F(50, 512), "high");
             Console.WriteLine("\n\nPress any key to close");
             Console.ReadKey();
         }
