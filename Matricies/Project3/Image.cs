@@ -1,56 +1,121 @@
-﻿
-using System.Drawing;
+﻿using System.Drawing;
+
 namespace Project3 {
-    class Image {
-        public Bitmap image { get; }
-        public double Width => image.Width;
-        public double Height => image.Height;
+    /// <summary>
+    /// An Image made of a Bitmap used for Signal processing of Images
+    /// </summary>
+    public class Image {
+        /// <summary>
+        /// Gets the Bitmap Image
+        /// </summary>
+        public Bitmap BMap { get; }
+        /// <summary>
+        /// Gets the Width of the Image
+        /// </summary>
+        public double Width => BMap.Width;
+        /// <summary>
+        /// Gets the Height of the Image
+        /// </summary>
+        public double Height => BMap.Height;
+        /// <summary>
+        /// Creates a new Image based on the given dimensions
+        /// </summary>
+        /// <param name="width">The width of the new Image</param>
+        /// <param name="height">The height of the new Image</param>
         public Image(int width, int height) {
-            image = new Bitmap(width, height);
+            BMap = new Bitmap(width, height);
             for (int i = 0; i < width; i++) {
                 for (int j = 0; j < height; j++) {
-                    ChangeColor(i, j, Color.Black);
+                    Set(i, j, Color.Black);
                 }
             }
         }
-        public Image(ComplexNumber[][] matrix) {
-            image = new Bitmap(matrix[0].Length, matrix.Length);
-            for(int i = 0; i < matrix.Length; i++) {
+        /// <summary>
+        /// Creates a new Image based on a Signal2D
+        /// </summary>
+        /// <param name="matrix">The Signal2D to base off of</param>
+        public Image(Signal2D matrix) {
+            BMap = new Bitmap(matrix.Width, matrix.Height);
+            for(int i = 0; i < matrix.Height; i++) {
                 for(int j = 0; j < matrix[0].Length; j++) {
-                    ChangeColor(j, i, Color.FromArgb((int)matrix[i][j].GetReal()));
+                    Set(j, i, Color.FromArgb((int)matrix[i][j].Real));
                 }
             }
         }
+        /// <summary>
+        /// Creates a new Image based on a Image file
+        /// </summary>
+        /// <param name="fileName">The Image file to base off of</param>
         public Image(string fileName) {
-            image = new Bitmap(fileName);
+            if(!fileName.Contains(".csv"))
+                BMap = new Bitmap(fileName);
+            else {
+                string[] lines = System.IO.File.ReadAllLines(fileName);
+                ComplexNumber[][] matrix = new ComplexNumber[lines.Length][];
+                for(int i = 0; i < lines.Length; i++) {
+                    string[] line = lines[i].Split(',');
+                    matrix[i] = new ComplexNumber[line.Length];
+                    for(int j = 0; j < line.Length; j++) {
+                        matrix[i][j] = double.Parse(line[j].Trim());
+                    }
+
+                }
+                BMap = new Bitmap(matrix[0].Length, matrix.Length);
+                for (int i = 0; i < matrix.Length; i++) {
+                    for (int j = 0; j < matrix[0].Length; j++) {
+                        int col = (int)((double)matrix[i][j]);
+                        Set(j, i, Color.FromArgb(col,col,col));
+                    }
+                }
+            }
         }
+        /// <summary>
+        /// Saves the Image to a file
+        /// </summary>
+        /// <param name="fileName">The name of the File to save to</param>
         public void Save(string fileName) {
-            image.Save(fileName);
+            BMap.Save(fileName);
         }
-        public void ChangeColor(int x, int y, Color color) {
-            image.SetPixel(x, y, color);
+        /// <summary>
+        /// Changes the color of a certain pixel in the Image
+        /// </summary>
+        /// <param name="x">The x coordinate of the Pixel</param>
+        /// <param name="y">The y coordinate of the Pixel</param>
+        /// <param name="color">The Color to change to</param>
+        public void Set(int x, int y, Color color) {
+            BMap.SetPixel(x, y, color);
         }
+        /// <summary>
+        /// Gets the row at the given index
+        /// </summary>
+        /// <param name="index">The index to get</param>
+        /// <returns>The row at the given index</returns>
         public Color[] this[int index] {
             get {
                 Color[] arr = new Color[(int)Width];
                 for (int i = 0; i < Width; i++)
-                    arr[i] = image.GetPixel(i, index);
+                    arr[i] = BMap.GetPixel(i, index);
                 return arr;
             }
         }
-        public void Set(int x, int y, Color color) {
-            image.SetPixel(x, y, color);
-        }
-        public ComplexNumber[][] GetMatrix() {
-            ComplexNumber[][] matrix = new ComplexNumber[(int)Height][];
+        /// <summary>
+        /// Gets a Signal2D representation of the Image
+        /// </summary>
+        /// <returns>The Signal2D of the Image</returns>
+        public Signal2D GetMatrix() {
+            Signal2D matrix = new Signal2D((int)Height,(int)Width);
             for(int i = 0; i < Height; i++) {
-                matrix[i] = new ComplexNumber[(int)Width];
+                matrix[i] = new Signal(matrix.Width);
                 for(int j = 0; j < Width; j++) {
-                    matrix[i][j] = image.GetPixel(j,i).ToArgb();
+                    matrix[i][j] = BMap.GetPixel(j,i).R;
                 }
             }
             return matrix;
         }
+        /// <summary>
+        /// Creates the Image A 
+        /// </summary>
+        /// <returns>Image A</returns>
         public static Image GetImageA() {
             Image a = new Image(512, 512);
             for(int row = 0; row < a.Height; row++) {
@@ -63,6 +128,10 @@ namespace Project3 {
             }
             return a;
         }
+        /// <summary>
+        /// Creates the Image B
+        /// </summary>
+        /// <returns>Image B</returns>
         public static Image GetImageB() {
             Image b = new Image(512, 512);
             for (int row = 0; row < b.Height; row++) {

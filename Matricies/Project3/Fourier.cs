@@ -2,7 +2,15 @@
 using NAudio.Wave.SampleProviders;
 
 namespace Project3 {
+    /// <summary>
+    /// Static methods used to perform Fourier Transforms and related functions
+    /// </summary>
     class Fourier {
+        /// <summary>
+        /// Applies the Fast Fourier Transform algorithm to a Signal
+        /// </summary>
+        /// <param name="signal">The Signal to apply FFT to</param>
+        /// <returns>The Fourier Transform of a Signal</returns>
         public static Signal FFT(Signal signal) {
             int N = signal.Length;
             if (N == 1)
@@ -30,6 +38,11 @@ namespace Project3 {
             }
             return result;
         }
+        /// <summary>
+        /// Applies the Fast Fourier Transform in 2 dimensions to a Signal in 2 dimensions
+        /// </summary>
+        /// <param name="signal">The Signal2D to apply FFT2D to</param>
+        /// <returns>The Fourier Transform of the Signal2D</returns>
         public static Signal2D FFT2D(Signal2D signal) {
             Signal2D result = new Signal2D(signal.Height, signal.Width);
             for (int i = 0; i < result.Height; i++)
@@ -52,6 +65,11 @@ namespace Project3 {
             return result;
 
         }
+        /// <summary>
+        /// Applies the Inverted Fast Fourier Transform algorithm in 2 dimensions to a Signal
+        /// </summary>
+        /// <param name="signal">The Signal2D to apply IFFT2D to</param>
+        /// <returns>The Inverted Fourier Transform of the Signal2D</returns>
         public static Signal2D InverseFFT2D(Signal2D signal) {
             Signal2D result = signal.GetConjugate();
             result = FFT2D(result);
@@ -62,18 +80,23 @@ namespace Project3 {
             }
             return result;
         }
-        public static ComplexNumber[][]InverseFFT2D(Image image) {
-            return InverseFFT2D(image.GetMatrix());
-        }
-        public static ComplexNumber[][] FFT2D(Image image) {
-            return FFT2D(image.GetMatrix());
-        }
+       /// <summary>
+       /// Applies the Inverse Fast Fourier Transform algorithm to a Signal
+       /// </summary>
+       /// <param name="signal">The Signal to apply IFFT to</param>
+       /// <returns>The Inverted Fourier Transform of the Signal</returns>
         public static Signal InverseFFT(Signal signal) {
             Signal result = signal.GetConjugate();
             result = FFT(result);
             result /= signal.Length;
             return result;
         }
+        /// <summary>
+        /// Applies Cross Correlation between 2 Signals
+        /// </summary>
+        /// <param name="x">The first Signal</param>
+        /// <param name="y">The second Signal</param>
+        /// <returns>The Cross Correlation of the 2 Signals</returns>
         public static Signal CrossCorrelation(Signal x, Signal y) {
             Signal Y = y;
             if (y.Length != x.Length)
@@ -98,9 +121,12 @@ namespace Project3 {
             }
             return InverseFFT(XY);
         }
-        public static ComplexNumber[][] CrossCorrelation2D(ComplexNumber[][] x, ComplexNumber[][] y) {
-            return null;
-        }
+        /// <summary>
+        /// Applies Cross Convolution between a Signal and a Filter. Used to apply Filters to a Signal
+        /// </summary>
+        /// <param name="signal">The Signal to Filter</param>
+        /// <param name="filter">The Filter to be used</param>
+        /// <returns>The Filtered Signal</returns>
         public static Signal CrossConvolution(Signal signal, Signal filter) {
             Signal filterFFT = filter.PadWithZeros(signal.Length);
             Signal signalFFT = FFT(signal);
@@ -111,64 +137,16 @@ namespace Project3 {
             }
             return InverseFFT(result);
          }
-        public static Signal Low(Signal s) {
-            Signal fft = FFT(s);
-            for(int i = 7; i < s.Length; i++) {
-                fft[i] = 0;
-            }
-            return InverseFFT(fft);
-        }
-        public static Signal High(Signal s) {
-            Signal fft = FFT(s);
-            for (int i = 0; i < 7; i++) {
-                fft[i] = 0;
-            }
-            return InverseFFT(fft);
-        }
-        public static Signal Band(Signal s) {
-            Signal fft = FFT(s);
-            for(int i = 0; i < s.Length; i++) {
-                if (i < 5 || i > 8)
-                    fft[i] = 0;
-            }
-            return InverseFFT(fft);
-        }
-        public static Signal Notch(Signal s) {
-            Signal fft = FFT(s);
-            for (int i = 0; i < s.Length; i++) {
-                if (!(i < 5 || i > 8))
-                    fft[i] = 0;
-            }
-            return InverseFFT(fft);
-        }
+        
         public static void Main(string[] args) {
-            double[][] data = Functions.GetDataFromFile("..\\..\\rangeTestDataSpring2018.txt");
-            Signal f50 = ((Signal2D)Functions.F(50, 512)).GetColumn(0);
-            Signal filtered = CrossConvolution(f50, Filter.LowPass(f50.Length, 7, 50));
-            //foreach(ComplexNumber n in High(f50))
-            //Console.WriteLine(n);
-            double[] tone = Functions.ReadWav("myToneA.wav");
-            Signal arr = ((Signal2D)Functions.G(50, 512)).GetColumn(0);
-            double[] a = new double[arr.Length];
-            for(int i = 0; i < arr.Length; i++) {
-                a[i] = arr[i].GetReal();
-            }
-            double[] t = new double[65536];
-            for (int i = 0; i < t.Length; i++)
-                t[i] = tone[i];
-            /*Functions.WriteWav("High.wav",High(t), 45000);
-            Functions.WriteWav("Low.wav", High(t), 45000);
-            Functions.WriteWav("Band.wav", Band(t), 45000);
-            Functions.WriteWav("Notch.wav", Notch(t), 45000);*/
-            // Functions.PlayWav("te.wav");
-          //  Functions.PlayWav("Low.wav");
-            Functions.PlayWav("High.wav");
-            Console.WriteLine("High");
-            Functions.PlayWav("Band.wav");
-            Console.WriteLine("Band");
-            Functions.PlayWav("Notch.wav");
-            Console.WriteLine("Notch");
-
+            Signal[] data = Functions.GetDataFromFile("..\\..\\rangeTestDataSpring2018.txt");
+            Signal s = Signal.GetFromFile("..\\..\\tonedataA1.txt");
+            // s = s.PSD();
+            s /= 100;
+            Signal f = Functions.F(50, 512).GetColumn(0);
+            f = Filter.High(f);
+            foreach(ComplexNumber n in f)
+                Console.WriteLine(n.Real);
             Console.WriteLine("\n\nPress any key to close");
             Console.ReadKey();
         }

@@ -3,6 +3,8 @@
 namespace Project3 {
     public class ComplexNumber {
         private double real, imag;
+        public double Real { get; }
+        public double Imag { get; }
         /// <summary>
         /// Creates a new ComplexNumber based on a real value and an imaginary value
         /// </summary>
@@ -11,20 +13,6 @@ namespace Project3 {
         public ComplexNumber(double real, double imag) {
             this.real = real;
             this.imag = imag;
-        }
-        /// <summary>
-        /// Gets the real value
-        /// </summary>
-        /// <returns>The real value</returns>
-        public double GetReal() {
-            return real;
-        }
-        /// <summary>
-        /// Gets the imaginary value
-        /// </summary>
-        /// <returns>The imaginary value</returns>
-        public double GetImag() {
-            return imag;
         }
         /// <summary>
         /// Changes the real value
@@ -52,9 +40,12 @@ namespace Project3 {
             else
                 return string.Format("{0} - {1}i", real, -imag);
         }
-
+        /// <summary>
+        /// Allows a ComplexNumber to be cast to a double
+        /// </summary>
+        /// <param name="v">The ComplexNumber to cast</param>
         public static explicit operator double(ComplexNumber v) {
-            return v.GetReal();
+            return v.Real;
         }
         /// <summary>
         /// Gets the Conjugate of the Complex number
@@ -129,8 +120,8 @@ namespace Project3 {
         /// <param name="b">The second Complex Number</param>
         /// <returns>The sum of the two Complex Numbers</returns>
         public static ComplexNumber operator+ (ComplexNumber a, ComplexNumber b) {
-            double real = a.GetReal() + b.GetReal();
-            double imag = a.GetImag() + b.GetImag();
+            double real = a.Real + b.Real;
+            double imag = a.Imag + b.Imag;
             return new ComplexNumber(real, imag);
         }
         /// <summary>
@@ -149,8 +140,8 @@ namespace Project3 {
         /// <param name="b">The second Complex Number</param>
         /// <returns>The product of the two Complex Numbers</returns>
         public static ComplexNumber operator* (ComplexNumber a, ComplexNumber b) {
-            double real = (a.GetReal() * b.GetReal()) - (a.GetImag() * b.GetImag());
-            double imag = (a.GetReal() * b.GetImag()) + (a.GetImag() * b.GetReal());
+            double real = (a.Real * b.Real) - (a.Imag * b.Imag);
+            double imag = (a.Real * b.Imag) + (a.Imag * b.Real);
             return new ComplexNumber(real, imag);
         }
         /// <summary>
@@ -163,8 +154,8 @@ namespace Project3 {
             ComplexNumber conj = b.GetConjugate();
             ComplexNumber top = a * conj;
             ComplexNumber bottom = b * conj;
-            if (bottom.GetReal() != 0.0 && bottom.GetImag() == 0.0)
-                return new ComplexNumber(top.GetReal() / bottom.GetReal(), top.GetImag() / bottom.GetReal());
+            if (bottom.Real != 0.0 && bottom.Imag == 0.0)
+                return new ComplexNumber(top.Real / bottom.Real, top.Imag / bottom.Real);
             else
                 return null;
         }
@@ -177,23 +168,14 @@ namespace Project3 {
         /// <param name="a">The Complex Number</param>
         /// <returns>The negated Complex Number</returns>
         public static ComplexNumber operator- (ComplexNumber a) {
-            return new ComplexNumber(-a.GetReal(), -a.GetImag());
+            return new ComplexNumber(-a.Real, -a.Imag);
         }
+        /// <summary>
+        /// Allows a double to be cast to a ComplexNumber
+        /// </summary>
+        /// <param name="d">The double to cast</param>
         public static implicit operator ComplexNumber(double d) {
             return new ComplexNumber(d, 0.0);
-        }
-        public static ComplexNumber[][] MatrixMult(ComplexNumber[][] a, ComplexNumber[][] b) {
-            if (a[0].Length != b.Length)
-                throw new ArgumentException("A's width must be equal to B's height");
-            ComplexNumber[][] result = new ComplexNumber[a.Length][];
-            for(int i = 0; i < a.Length; i++) {
-                for(int j = 0; j < b[0].Length; j++) {
-                    for(int y = 0; y < a.Length; y++) {
-                        result[i][j] = result[i][j] + (a[i][y] * b[y][j]);
-                    }
-                }
-            }
-            return result;
         }
     }
 }

@@ -5,25 +5,57 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace Project3 {
-    class Filter : Signal {
+    /// <summary>
+    /// A Filter which is a subclass of Signal
+    /// </summary>
+    public class Filter : Signal {
+        /// <summary>
+        /// Creates a new Filter based on a double[]
+        /// </summary>
+        /// <param name="frequencies">The double[] to base the Filter on</param>
         public Filter(double[] frequencies) : base(frequencies) {
 
         }
+        /// <summary>
+        /// Creates a new Filter based on a ComplexNumber[]
+        /// </summary>
+        /// <param name="frequencies">The Complex[] to base the Filter on</param>
         public Filter(ComplexNumber[] frequencies) : base(frequencies) {
 
         }
+        /// <summary>
+        /// Creates a blank Filter based on the given size
+        /// </summary>
+        /// <param name="length">The desired size of the Filter</param>
         public Filter(int length) :base(length) {
             
         }
+        /// <summary>
+        /// Allows a ComplexNumber[] to be cast to a Filter
+        /// </summary>
+        /// <param name="arr">The ComplexNumber[] to cast</param>
         public static implicit operator Filter(ComplexNumber[] arr) {
             return new Filter(arr);
         }
+        /// <summary>
+        /// Allows a double[] to be cast to a Filter
+        /// </summary>
+        /// <param name="arr">The double[] to cast</param>
         public static implicit operator Filter(double[] arr) {
             return new Filter(arr);
         }
+        /// <summary>
+        /// Allows a Filter to be cast to a ComplexNumber[]
+        /// </summary>
+        /// <param name="s">The Filter to cast</param>
         public static implicit operator ComplexNumber[] (Filter s) {
             return s.Frequencies;
         }
+        /// <summary>
+        /// Creates a new averaging Filter
+        /// </summary>
+        /// <param name="p">The number of points for the filter</param>
+        /// <returns>The Averaging Filter</returns>
         public static Filter Averaging(int p) {
             Filter result = new Filter(p);
             for(int i = 0; i < p; i++) {
@@ -31,66 +63,79 @@ namespace Project3 {
             }
             return result;
         }
-        public static Filter LowPass(int len, int h, int s) {
-            Filter result = new Filter(len);
-            for (int i = 0; i < len; i++) {
-                if (i == 0) {
-                    result[i] = (2.0 * h) / s;
-                }
-                else {
-                    result[i] = (1.0 / (Math.PI * i)) * Math.Sin((2.0 * i * Math.PI * h) / s);
-                }
+        /// <summary>
+        /// Applies a Low Pass Filter to a Signal
+        /// </summary>
+        /// <param name="s">The Signal to filter</param>
+        /// <returns>The Filtered Signal</returns>
+        public static Signal Low(Signal s) {
+            Signal result = new Signal(s.Length);
+            Signal fft = Fourier.FFT(s);
+            for (int i = 0; i < result.Length; i++)
+                result[i] = 0;
+            int indexPass = (7 * 2);
+            for (int i = 1; i < indexPass; i += 2) {
+                result[i] = fft[i];
             }
-            return result;
-        }
-        public static Filter HighPass(int len, int m, int s) {
-            Filter result = new Filter(len);
-            for (int i = 0; i < len; i++) {
-                if (i == 0) {
-                    result[i] = (s - 2.0 * m) / s;
-                }
-                else {
-                    result[i] = (-1.0 / (Math.PI * i)) * Math.Sin((2.0 * i * Math.PI * m) / s);
-                }
+            for (int i = result.Length - indexPass+1; i < result.Length; i += 2) {
+                result[i] = fft[i];
             }
-            return result;
+
+            return Fourier.InverseFFT(result);
         }
-        public static Filter BandPass(int len, int m, int h, int s) {
-            Filter result = new Filter(len);
-            for (int i = 0; i < len; i++) {
-                if (i == 0) {
-                    result[i] = (2.0 * (h - m)) / s;
-                }
-                else {
-                    result[i] = (1.0 / (Math.PI * i)) * (Math.Sin((2.0 * i * Math.PI * h) / s) - Math.Sin((2.0 * i * Math.PI * m)));
-                }
+        /// <summary>
+        /// Applies a High Pass Filter to a Signal
+        /// </summary>
+        /// <param name="s">The Signal to filter</param>
+        /// <returns>The Filtered Signal</returns>
+        public static Signal High(Signal s) {
+            Signal fft = Fourier.FFT(s);
+            int indexPass = (7 * 2) - 1;
+            Signal result = new Signal(s.Length);
+            for (int i = 0; i < result.Length; i++)
+                result[i] = 0;
+            for (int i = 15; i < result.Length - indexPass; i += 2) {
+                result[i] = fft[i];
             }
-            return result;
+            return Fourier.InverseFFT(result);
         }
-        public static Filter Notch(int len, int h, int m, int s) {
-            Filter result = new Filter(len);
-            for (int i = 0; i < len; i++) {
-                if (i == 0) {
-                    result[i] = (s - (2.0 * (h - m))) / s;
+        /// <summary>
+        /// Applies a Band Filter to a Signal
+        /// </summary>
+        /// <param name="s">The Signal to filter</param>
+        /// <returns>The Filtered Signal</returns>
+        public static Signal Band(Signal s) {
+            Signal fft = Fourier.FFT(s);
+            int x = 0;
+            for (int i = 0; i < s.Length; i++) {
+                if (i % 2 != 0) {
+                    x++;
+                    if (x < 5 || x > 8)
+                        fft[i] = 0;
                 }
-                else {
-                    result[i] = (1.0 / (Math.PI * i)) * (Math.Sin((2.0 * i * Math.PI * m) / s) - Math.Sin((2.0 * i * Math.PI * h)));
-                }
+                else
+                    fft[i] = 0;
             }
-            return result;
+            return Fourier.InverseFFT(fft);
         }
-        public static ComplexNumber BarlettWindow(int p,int i) {
-            return 1.0 - Math.Abs(i)/(double)p;
+        /// <summary>
+        /// Applies a Notch Filter to a Signal
+        /// </summary>
+        /// <param name="s">The Signal to filter</param>
+        /// <returns>The Filtered Signal</returns>
+        public static Signal Notch(Signal s) {
+            Signal fft = Fourier.FFT(s);
+            int x = 0;
+            for (int i = 0; i < s.Length; i++) {
+                if (i % 2 != 0) {
+                    x++;
+                    if (x >= 5 && x <= 8)
+                        fft[i] = 0;
+                }
+                else
+                    fft[i] = 0;
+            }
+            return Fourier.InverseFFT(fft);
         }
-        public static ComplexNumber WelchWindow(int p, int i) {
-            return 1.0 - Math.Pow(Math.Abs(i) / (double)p,2.0);
-        }
-        public static ComplexNumber HanningWindow(int p, int i) {
-            return .5 * (1 + Math.Cos((i * Math.PI) / p));
-        }
-        public static ComplexNumber HammingWindow(int p, int i) {
-            return .54 + .46 * Math.Cos((i * Math.PI) / p);
-        }
- 
     }
 }
