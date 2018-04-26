@@ -24,9 +24,9 @@ namespace Project3 {
         /// <param name="height">The height of the new Image</param>
         public Image(int width, int height) {
             BMap = new Bitmap(width, height);
-            for (int i = 0; i < width; i++) {
-                for (int j = 0; j < height; j++) {
-                    Set(i, j, Color.Black);
+            for (int i = 0; i < height; i++) {
+                for (int j = 0; j < width; j++) {
+                    Set(j,i, Color.Black);
                 }
             }
         }
@@ -107,7 +107,7 @@ namespace Project3 {
             for(int i = 0; i < Height; i++) {
                 matrix[i] = new Signal(matrix.Width);
                 for(int j = 0; j < Width; j++) {
-                    matrix[i][j] = BMap.GetPixel(j,i).ToArgb();
+                    matrix[i][j] = BMap.GetPixel(i,j).ToArgb();
                 }
             }
             return matrix;
@@ -117,7 +117,7 @@ namespace Project3 {
             for(int i = 0; i < Height; i++) {
                 matrix[i] = new Signal(matrix.Width);
                 for(int j = 0; j < Width; j++) {
-                    matrix[i][j] = BMap.GetPixel(j, i).R;
+                    matrix[i][j] = BMap.GetPixel(i,j).R;
                 }
             }
             return matrix;
@@ -127,7 +127,7 @@ namespace Project3 {
             for (int i = 0; i < Height; i++) {
                 matrix[i] = new Signal(matrix.Width);
                 for (int j = 0; j < Width; j++) {
-                    matrix[i][j] = BMap.GetPixel(j, i).G;
+                    matrix[i][j] = BMap.GetPixel(i,j).G;
                 }
             }
             return matrix;
@@ -137,7 +137,7 @@ namespace Project3 {
             for (int i = 0; i < Height; i++) {
                 matrix[i] = new Signal(matrix.Width);
                 for (int j = 0; j < Width; j++) {
-                    matrix[i][j] = BMap.GetPixel(j, i).B;
+                    matrix[i][j] = BMap.GetPixel(i,j).B;
                 }
             }
             return matrix;
@@ -146,9 +146,9 @@ namespace Project3 {
             Signal2D[] rgb = new Signal2D[] {new Signal2D((int)Height,(int)Width), new Signal2D((int)Height, (int)Width), new Signal2D((int)Height, (int)Width) };
             for(int i = 0; i < Height; i++) {
                 for(int j = 0; j < Width; j++) {
-                    rgb[0][i][j] = BMap.GetPixel(j, i).R;
-                    rgb[1][i][j] = BMap.GetPixel(j, i).G;
-                    rgb[2][i][j] = BMap.GetPixel(j, i).B;
+                    rgb[0][i][j] = BMap.GetPixel(i,j).R;
+                    rgb[1][i][j] = BMap.GetPixel(i,j).G;
+                    rgb[2][i][j] = BMap.GetPixel(i,j).B;
                 }
             }
             return rgb;
@@ -170,7 +170,7 @@ namespace Project3 {
                     if (blue[i][j].Real < 0)
                         blue[i][j] = 0;
                     Color c = Color.FromArgb((int)red[i][j], (int)green[i][j], (int)blue[i][j]);
-                    image.Set(j, i, c);
+                    image.Set(i,j, c);
                 }
             }
             return image;
