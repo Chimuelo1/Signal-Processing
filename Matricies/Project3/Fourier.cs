@@ -44,6 +44,7 @@ namespace Project3 {
         /// <param name="signal">The Signal2D to apply FFT2D to</param>
         /// <returns>The Fourier Transform of the Signal2D</returns>
         public static Signal2D FFT2D(Signal2D signal) {
+            Console.WriteLine("FFT2D called");
             Signal2D result = new Signal2D(signal.Height, signal.Width);
             for (int i = 0; i < result.Height; i++)
                 result[i] = new ComplexNumber[signal[i].Length];
@@ -71,6 +72,7 @@ namespace Project3 {
         /// <param name="signal">The Signal2D to apply IFFT2D to</param>
         /// <returns>The Inverted Fourier Transform of the Signal2D</returns>
         public static Signal2D InverseFFT2D(Signal2D signal) {
+            Console.WriteLine("InverseFFT2D called");
             Signal2D result = signal.GetConjugate();
             result = FFT2D(result);
             for (int i = 0; i < signal.Height; i++) {
@@ -144,23 +146,35 @@ namespace Project3 {
             return InverseFFT2D(result);
         }
         public static Signal2D CrossCorrelation2D(Signal2D signal, Signal2D filter) {
-            Signal2D filterFFT = FFT2D(filter).GetConjugate();
+            Console.WriteLine("cross correlation called");
+            Signal2D filterFFT = FFT2D(filter);
             Signal2D signalFFT = FFT2D(signal);
-            Signal2D result = filterFFT * signalFFT;
+            Signal2D result = signalFFT * filterFFT;
             return InverseFFT2D(result);
+        }
+        public static Signal2D CrossCorrelation2D(Signal2D signal, Signal2D filter, bool ye) {
+            Signal s = signal.ToSignal();
+            Signal f = filter.ToSignal().GetConjugate();
+            Signal cross = CrossCorrelation(s, f);
+            return Signal2D.FromSignal(cross,signal.Width);
         }
         public static void Main(string[] args) {
             Image a = Image.GetImageA();
             Image b = Image.GetImageB();
-
+            Console.WriteLine("Loaded images");
             Signal2D[] colorA = a.Deconstruct();
             Signal2D[] colorB = b.Deconstruct();
+            Console.WriteLine("Deconstructed colors");
             Signal2D[] resultColor = new Signal2D[3];
-            resultColor[0] = CrossConvolution2D(colorA[0], colorB[0]).GetMagnitude();
+            var time = System.Diagnostics.Stopwatch.StartNew();
+            resultColor[0] = CrossCorrelation2D(colorA[0], colorB[0]).GetMagnitude();
+            time.Stop();
             resultColor[1] = resultColor[0];
             resultColor[2] = resultColor[0];
+            Console.WriteLine("Finished correlation in "+time.ElapsedMilliseconds/1000.0 +" seconds");
             
-            Image.Reconstruct(resultColor[0], resultColor[1], resultColor[2]).Save("corr2.jpg");
+            Image.Reconstruct(resultColor[0], resultColor[1], resultColor[2]).Save("corr3.jpg");
+            Console.WriteLine("reconstructed image");
             for(int i = 0; i < a.Height; i++)
                 for(int j = 0; j < a.Width; j++)
                    // Console.WriteLine(resultColor[0][i][j]+","+ resultColor[1][i][j]+","+ resultColor[2][i][j]);

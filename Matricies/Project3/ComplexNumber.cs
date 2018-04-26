@@ -177,5 +177,8 @@ namespace Project3 {
         public static implicit operator ComplexNumber(double d) {
             return new ComplexNumber(d, 0.0);
         }
+        public static explicit operator int(ComplexNumber n) {
+            return (int)n.Real;
+        }
     }
 }

@@ -171,17 +171,21 @@ namespace Project3 {
         /// <param name="b">The second Signal2D</param>
         /// <returns>The product of the 2 Signal2Ds</returns>
         public static Signal2D operator* (Signal2D a, Signal2D b) {
+            Console.WriteLine("Matrix multiplication called");
             if (a.Width != b.Height)
                 throw new ArgumentException("A's width must be equal to B's Length");
             Signal2D result = new Signal2D(a.Height, b.Width);
+            Console.WriteLine("inside for loop");
             for(int i = 0; i < result.Height; i++) {
+               // Console.Write("i: " + i + "\r");
                 for(int j = 0; j < b.Width; j++) {
                     result[i][j] = 0;
                     for(int y = 0; y < a.Width; y++) {
-                        result[i][j] = result[i][j] + (a[i][y] * b[y][j]);
+                        result[i][j] += a[i][y] * b[y][j];
                     }
                 }
             }
+            Console.WriteLine("Matrix multiplication finished");
             return result;
         }
         /// <summary>
@@ -234,18 +238,39 @@ namespace Project3 {
             return result;
         }
         public Signal2D GetMagnitude() {
+            Console.WriteLine("getting magnitude");
             Signal2D mag = this;
             for (int i = 0; i < mag.Height; i++) {
                 for (int j = 0; j < mag.Width; j++) {
                     double magnitude = mag[i][j].GetMagnitude();
-                    if (magnitude < 0.0000000000000000000000000000000000000000000000000000000000000001)
-                        magnitude = 0.0000000000000000000000000000000000000000000000000000000000000001;
-                    mag[i][j] = Math.Abs(Math.Log(magnitude))*10.0;
+                    mag[i][j] = Math.Abs(Math.Log(magnitude))*20.0;
 
                 }
             }
             
             return mag;
+        }
+        public Signal ToSignal() {
+            Signal result = new Signal(Width * Height);
+            int x = 0;
+            for(int i = 0; i < Height; i++) {
+                for(int j = 0; j < Width; j++) {
+                    result[x] = this[i][j];
+                    x++;
+                }
+            }
+            return result;
+        }
+        public static Signal2D FromSignal(Signal signal, int width) {
+            int height = signal.Length / width;
+            Signal2D result = new Signal2D(height, width);
+            int x = 0;
+            for(int i = 0; i < height; i++) {
+                for(int j = 0; j < width; j++) {
+                    result[i][j] = signal[x];
+                }
+            }
+            return result;
         }
     }
 }
