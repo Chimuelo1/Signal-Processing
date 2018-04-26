@@ -130,8 +130,9 @@ namespace Project3 {
             waveOut.Init(reader);
 
             waveOut.Play();
-            while (waveOut.PlaybackState == PlaybackState.Playing)
-                System.Threading.Thread.Sleep(1000);
+            while (waveOut.PlaybackState == PlaybackState.Playing) {
+                System.Threading.Thread.Sleep(5);
+            }
             reader.Close();
         }
         /// <summary>

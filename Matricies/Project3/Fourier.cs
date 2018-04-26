@@ -48,21 +48,22 @@ namespace Project3 {
             Signal2D result = new Signal2D(signal.Height, signal.Width);
             for (int i = 0; i < result.Height; i++)
                 result[i] = new ComplexNumber[signal[i].Length];
+            //rows
+            for (int n = 0; n < signal.Height; n++) {
+                result[n] = FFT(signal[n]);
+            }
             //columns
-            for(int k = 0; k < signal[0].Length; k++) {
+            for (int k = 0; k < signal[0].Length; k++) {
                 ComplexNumber[] col = new ComplexNumber[signal.Height];
                 for(int j = 0; j < col.Length; j++) {
-                    col[j] = signal[j][k];
+                    col[j] = result[j][k];
                 }
                 col = FFT(col);
                 for (int j = 0; j < col.Length; j++) {
                     result[j][k] = col[j];
                 }
             }
-            //rows
-            for(int n = 0; n < signal.Height; n++) {
-                result[n] = FFT(result[n]);
-            }
+            
             return result;
 
         }
@@ -147,27 +148,25 @@ namespace Project3 {
         }
         public static Signal2D CrossCorrelation2D(Signal2D signal, Signal2D filter) {
             Console.WriteLine("cross correlation called");
-            Signal2D filterFFT = FFT2D(filter);
+            Signal2D filterFFT = FFT2D(filter).GetConjugate();
             Signal2D signalFFT = FFT2D(signal);
             Signal2D result = signalFFT * filterFFT;
             return InverseFFT2D(result);
         }
-        public static Signal2D CrossCorrelation2D(Signal2D signal, Signal2D filter, bool ye) {
-            Signal s = signal.ToSignal();
-            Signal f = filter.ToSignal().GetConjugate();
-            Signal cross = CrossCorrelation(s, f);
-            return Signal2D.FromSignal(cross,signal.Width);
-        }
         public static void Main(string[] args) {
             Image a = Image.GetImageA();
             Image b = Image.GetImageB();
+            Signal2D[] ah = b.Deconstruct();
+            for (int i = 0; i < ah.Length; i++)
+                ah[i] = FFT2D(ah[i]);
+            Image.Reconstruct(ah[0], ah[1], ah[2]).Save("fft.jpg");
             Console.WriteLine("Loaded images");
-            Signal2D[] colorA = a.Deconstruct();
-            Signal2D[] colorB = b.Deconstruct();
+            Signal2D colorA = a.GetRedMatrix();
+            Signal2D colorB = b.GetRedMatrix();
             Console.WriteLine("Deconstructed colors");
             Signal2D[] resultColor = new Signal2D[3];
             var time = System.Diagnostics.Stopwatch.StartNew();
-            resultColor[0] = CrossCorrelation2D(colorA[0], colorB[0]).GetMagnitude();
+            resultColor[0] = CrossCorrelation2D(colorA, colorB).GetMagnitude();
             time.Stop();
             resultColor[1] = resultColor[0];
             resultColor[2] = resultColor[0];
@@ -175,9 +174,6 @@ namespace Project3 {
             
             Image.Reconstruct(resultColor[0], resultColor[1], resultColor[2]).Save("corr3.jpg");
             Console.WriteLine("reconstructed image");
-            for(int i = 0; i < a.Height; i++)
-                for(int j = 0; j < a.Width; j++)
-                   // Console.WriteLine(resultColor[0][i][j]+","+ resultColor[1][i][j]+","+ resultColor[2][i][j]);
             Functions.PlayWav("..\\..\\DTMF\\A.wav");
             Console.WriteLine("\n\nPress any key to close");
             Console.ReadKey();

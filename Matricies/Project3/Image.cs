@@ -157,6 +157,18 @@ namespace Project3 {
             Image image = new Image(red.Width, red.Height);
             for(int i = 0; i < image.Height; i++) {
                 for(int j = 0; j < image.Width; j++) {
+                    if (red[i][j].Real > 255)
+                        red[i][j] = 255;
+                    if (green[i][j].Real > 255)
+                        green[i][j] = 255;
+                    if (blue[i][j].Real > 255)
+                        blue[i][j] = 255;
+                    if (red[i][j].Real < 0)
+                        red[i][j] = 0;
+                    if (green[i][j].Real < 0)
+                        green[i][j] = 0;
+                    if (blue[i][j].Real < 0)
+                        blue[i][j] = 0;
                     Color c = Color.FromArgb((int)red[i][j], (int)green[i][j], (int)blue[i][j]);
                     image.Set(j, i, c);
                 }
