@@ -176,6 +176,7 @@ namespace Project3 {
             Signal2D result = new Signal2D(a.Height, b.Width);
             for(int i = 0; i < result.Height; i++) {
                 for(int j = 0; j < b.Width; j++) {
+                    result[i][j] = 0;
                     for(int y = 0; y < a.Width; y++) {
                         result[i][j] = result[i][j] + (a[i][y] * b[y][j]);
                     }
@@ -231,6 +232,20 @@ namespace Project3 {
                 }
             }
             return result;
+        }
+        public Signal2D GetMagnitude() {
+            Signal2D mag = this;
+            for (int i = 0; i < mag.Height; i++) {
+                for (int j = 0; j < mag.Width; j++) {
+                    double magnitude = mag[i][j].GetMagnitude();
+                    if (magnitude < 0.0000000000000000000000000000000000000000000000000000000000000001)
+                        magnitude = 0.0000000000000000000000000000000000000000000000000000000000000001;
+                    mag[i][j] = Math.Abs(Math.Log(magnitude))*10.0;
+
+                }
+            }
+            
+            return mag;
         }
     }
 }

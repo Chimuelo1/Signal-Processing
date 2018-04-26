@@ -137,9 +137,34 @@ namespace Project3 {
             }
             return InverseFFT(result);
          }
-        
+        public static Signal2D CrossConvolution2D(Signal2D signal, Signal2D filter) {
+            Signal2D filterFFT = FFT2D(filter);
+            Signal2D signalFFT = FFT2D(signal);
+            Signal2D result = filterFFT * signalFFT;
+            return InverseFFT2D(result);
+        }
+        public static Signal2D CrossCorrelation2D(Signal2D signal, Signal2D filter) {
+            Signal2D filterFFT = FFT2D(filter).GetConjugate();
+            Signal2D signalFFT = FFT2D(signal);
+            Signal2D result = filterFFT * signalFFT;
+            return InverseFFT2D(result);
+        }
         public static void Main(string[] args) {
-            Functions.RunFilter(Functions.F(50, 512), "high");
+            Image a = Image.GetImageA();
+            Image b = Image.GetImageB();
+
+            Signal2D[] colorA = a.Deconstruct();
+            Signal2D[] colorB = b.Deconstruct();
+            Signal2D[] resultColor = new Signal2D[3];
+            resultColor[0] = CrossConvolution2D(colorA[0], colorB[0]).GetMagnitude();
+            resultColor[1] = resultColor[0];
+            resultColor[2] = resultColor[0];
+            
+            Image.Reconstruct(resultColor[0], resultColor[1], resultColor[2]).Save("corr2.jpg");
+            for(int i = 0; i < a.Height; i++)
+                for(int j = 0; j < a.Width; j++)
+                   // Console.WriteLine(resultColor[0][i][j]+","+ resultColor[1][i][j]+","+ resultColor[2][i][j]);
+            Functions.PlayWav("..\\..\\DTMF\\A.wav");
             Console.WriteLine("\n\nPress any key to close");
             Console.ReadKey();
         }

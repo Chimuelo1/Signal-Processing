@@ -200,5 +200,11 @@ namespace Project3 {
                 Console.WriteLine(n.Real);
             }
         }
+        public static void RunDTMF(string fileName) {
+            Signal s= Signal.GetFromFile(fileName);
+            s = s.PSD();
+            foreach(ComplexNumber n in s)
+                Console.WriteLine(n.Real);
+        }
     }
 }

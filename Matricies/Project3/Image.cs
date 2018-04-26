@@ -107,10 +107,61 @@ namespace Project3 {
             for(int i = 0; i < Height; i++) {
                 matrix[i] = new Signal(matrix.Width);
                 for(int j = 0; j < Width; j++) {
-                    matrix[i][j] = BMap.GetPixel(j,i).R;
+                    matrix[i][j] = BMap.GetPixel(j,i).ToArgb();
                 }
             }
             return matrix;
+        }
+        public Signal2D GetRedMatrix() {
+            Signal2D matrix = new Signal2D((int)Height, (int)Width);
+            for(int i = 0; i < Height; i++) {
+                matrix[i] = new Signal(matrix.Width);
+                for(int j = 0; j < Width; j++) {
+                    matrix[i][j] = BMap.GetPixel(j, i).R;
+                }
+            }
+            return matrix;
+        }
+        public Signal2D GetGreenMatrix() {
+            Signal2D matrix = new Signal2D((int)Height, (int)Width);
+            for (int i = 0; i < Height; i++) {
+                matrix[i] = new Signal(matrix.Width);
+                for (int j = 0; j < Width; j++) {
+                    matrix[i][j] = BMap.GetPixel(j, i).G;
+                }
+            }
+            return matrix;
+        }
+        public Signal2D GetBlueMatrix() {
+            Signal2D matrix = new Signal2D((int)Height, (int)Width);
+            for (int i = 0; i < Height; i++) {
+                matrix[i] = new Signal(matrix.Width);
+                for (int j = 0; j < Width; j++) {
+                    matrix[i][j] = BMap.GetPixel(j, i).B;
+                }
+            }
+            return matrix;
+        }
+        public Signal2D[] Deconstruct() {
+            Signal2D[] rgb = new Signal2D[] {new Signal2D((int)Height,(int)Width), new Signal2D((int)Height, (int)Width), new Signal2D((int)Height, (int)Width) };
+            for(int i = 0; i < Height; i++) {
+                for(int j = 0; j < Width; j++) {
+                    rgb[0][i][j] = BMap.GetPixel(j, i).R;
+                    rgb[1][i][j] = BMap.GetPixel(j, i).G;
+                    rgb[2][i][j] = BMap.GetPixel(j, i).B;
+                }
+            }
+            return rgb;
+        }
+        public static Image Reconstruct(Signal2D red, Signal2D green, Signal2D blue) {
+            Image image = new Image(red.Width, red.Height);
+            for(int i = 0; i < image.Height; i++) {
+                for(int j = 0; j < image.Width; j++) {
+                    Color c = Color.FromArgb((int)red[i][j], (int)green[i][j], (int)blue[i][j]);
+                    image.Set(j, i, c);
+                }
+            }
+            return image;
         }
         /// <summary>
         /// Creates the Image A 

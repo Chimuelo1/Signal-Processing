@@ -129,11 +129,9 @@ namespace Project3 {
                 result[i] = fft[i];
             for (int i = 9; i < 16; i++) {
                 result[i] = 0;
-                Console.WriteLine(i);
             }
             for (int i = 497; i < 504; i++) {
                 result[i] = 0;
-                Console.WriteLine(i);
             }
             return Fourier.InverseFFT(result);
         }
