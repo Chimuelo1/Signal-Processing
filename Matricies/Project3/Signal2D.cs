@@ -233,19 +233,57 @@ namespace Project3 {
         public Signal2D GetMagnitude() {
             Console.WriteLine("getting magnitude");
             Signal2D mag = this;
+            int[] maxIndex = Max();
+            int[] minIndex = Min();
+            double max = this[maxIndex[0]][maxIndex[1]].Real;
+            double min = this[minIndex[0]][minIndex[1]].Real;
+            double scalar = 255.0 / max;
             for (int i = 0; i < mag.Height; i++) {
                 for (int j = 0; j < mag.Width; j++) {
-                   // mag[i][j] = mag[i][j].GetMagnitude();
-                    if (mag[i][j].Real <= 1) {
-                        mag[i][j] = 1;
-                    }
-                    mag[i][j] = (Math.Log(mag[i][j].Real))*200.0;
-                    if (mag[i][j].Real > 255)
-                        mag[i][j] = 255;
-
+                    mag[i][j] *= scalar;
                 }
             }
+            maxIndex = Max();
+            minIndex = Min();
+            max = this[maxIndex[0]][maxIndex[1]].Real;
+            min = this[minIndex[0]][minIndex[1]].Real;
             return mag;
+        }
+        public int[] Max() {
+            int[] maxXY = new int[2];
+            int x = 0;
+            int y = 0;
+            double max = double.MinValue;
+            for(int i = 0; i < Height; i++) {
+                for(int j = 0; j < Width; j++) {
+                    if(this[j][i].Real > max) {
+                        x = j;
+                        y = i;
+                        max = this[j][i].Real;
+                    }
+                }
+            }
+            maxXY[0] = x;
+            maxXY[1] = y;
+            return maxXY;
+        }
+        public int[] Min() {
+            int[] minXY = new int[2];
+            int x = 0;
+            int y = 0;
+            double min = double.MaxValue;
+            for (int i = 0; i < Height; i++) {
+                for (int j = 0; j < Width; j++) {
+                    if (this[j][i].Real < min) {
+                        x = j;
+                        y = i;
+                        min = this[j][i].Real;
+                    }
+                }
+            }
+            minXY[0] = x;
+            minXY[1] = y;
+            return minXY;
         }
     }
 }

@@ -157,6 +157,7 @@ namespace Project3 {
             Image image = new Image(red.Width, red.Height);
             for(int i = 0; i < image.Height; i++) {
                 for(int j = 0; j < image.Width; j++) {
+                    int r = (int)red[i][j].Real;
                     if (red[i][j].Real > 255)
                         red[i][j] = 255;
                     if (green[i][j].Real > 255)
@@ -179,7 +180,7 @@ namespace Project3 {
         /// Creates the Image A 
         /// </summary>
         /// <returns>Image A</returns>
-        public static Image GetImageA() {
+        public static Image GetSignalImage() {
             Image a = new Image(512, 512);
             for(int row = 0; row < a.Height; row++) {
                 for(int col = 0; col < a.Width; col++) {
@@ -195,7 +196,7 @@ namespace Project3 {
         /// Creates the Image B
         /// </summary>
         /// <returns>Image B</returns>
-        public static Image GetImageB() {
+        public static Image GetPulseImage() {
             Image b = new Image(512, 512);
             for (int row = 0; row < b.Height; row++) {
                 for (int col = 0; col < b.Width; col++) {
@@ -206,6 +207,20 @@ namespace Project3 {
                 }
             }
             return b;
+        }
+        public Image MarkRed() {
+            Image im = this;
+            double index = 255.0 - (255.0 * .1);
+            for(int i = 0; i < Height; i++) {
+                System.Console.Write(i+"\r");
+                for(int j = 0; j < Width; j++) {
+                    int val = BMap.GetPixel(j, i).R;
+                    if(val > index) {
+                        BMap.SetPixel(j, i, Color.FromArgb(val, 0, 0));
+                    }
+                }
+            }
+            return im;
         }
     }
 }

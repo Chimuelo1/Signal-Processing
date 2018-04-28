@@ -1,5 +1,4 @@
 ﻿using System;
-using NAudio.Wave.SampleProviders;
 
 namespace Project3 {
     /// <summary>
@@ -17,8 +16,8 @@ namespace Project3 {
                 return signal;
             if ((N & (N - 1)) != 0)
                 throw new ArgumentOutOfRangeException("signal length must be a power of 2");
-            Signal evenArr = new Signal(N/2);
-            Signal oddArr = new Signal(N/2);
+            Signal evenArr = new Signal(N / 2);
+            Signal oddArr = new Signal(N / 2);
             for (int i = 0; i < N / 2; i++) {
                 evenArr[i] = signal[2 * i];
             }
@@ -44,7 +43,6 @@ namespace Project3 {
         /// <param name="signal">The Signal2D to apply FFT2D to</param>
         /// <returns>The Fourier Transform of the Signal2D</returns>
         public static Signal2D FFT2D(Signal2D signal) {
-            Console.WriteLine("FFT2D called");
             Signal2D result = new Signal2D(signal.Height, signal.Width);
             for (int i = 0; i < result.Height; i++)
                 result[i] = new ComplexNumber[signal[i].Length];
@@ -53,19 +51,17 @@ namespace Project3 {
                 result[n] = FFT(signal[n]);
             }
             //columns
-            for (int k = 0; k < signal[0].Length; k++) {
+            for (int i = 0; i < signal[0].Length; i++) {
                 ComplexNumber[] col = new ComplexNumber[signal.Height];
-                for(int j = 0; j < col.Length; j++) {
-                    col[j] = result[j][k];
+                for (int j = 0; j < col.Length; j++) {
+                    col[j] = result[j][i];
                 }
                 col = FFT(col);
                 for (int j = 0; j < col.Length; j++) {
-                    result[j][k] = col[j];
+                    result[j][i] = col[j];
                 }
             }
-            
             return result;
-
         }
         /// <summary>
         /// Applies the Inverted Fast Fourier Transform algorithm in 2 dimensions to a Signal
@@ -73,21 +69,20 @@ namespace Project3 {
         /// <param name="signal">The Signal2D to apply IFFT2D to</param>
         /// <returns>The Inverted Fourier Transform of the Signal2D</returns>
         public static Signal2D InverseFFT2D(Signal2D signal) {
-            Console.WriteLine("InverseFFT2D called");
             Signal2D result = signal.GetConjugate();
             result = FFT2D(result);
             for (int i = 0; i < signal.Height; i++) {
                 for (int j = 0; j < signal.Width; j++) {
-                    result[i][j] /= signal.Width*signal.Height;
+                    result[i][j] /= signal.Width * signal.Height;
                 }
             }
             return result;
         }
-       /// <summary>
-       /// Applies the Inverse Fast Fourier Transform algorithm to a Signal
-       /// </summary>
-       /// <param name="signal">The Signal to apply IFFT to</param>
-       /// <returns>The Inverted Fourier Transform of the Signal</returns>
+        /// <summary>
+        /// Applies the Inverse Fast Fourier Transform algorithm to a Signal
+        /// </summary>
+        /// <param name="signal">The Signal to apply IFFT to</param>
+        /// <returns>The Inverted Fourier Transform of the Signal</returns>
         public static Signal InverseFFT(Signal signal) {
             Signal result = signal.GetConjugate();
             result = FFT(result);
@@ -105,8 +100,8 @@ namespace Project3 {
             if (y.Length != x.Length)
                 Y = y.PadWithZeros(x.Length);
             int shiftAmt = 0;
-            Signal shift = new Signal(Y.Length+shiftAmt);
-            for(int i = 0; i < shift.Length; i++) {
+            Signal shift = new Signal(Y.Length + shiftAmt);
+            for (int i = 0; i < shift.Length; i++) {
                 if (i < shiftAmt)
                     shift[i] = 0;
                 else {
@@ -119,7 +114,7 @@ namespace Project3 {
             Signal X = FFT(x);
             Y = FFT(Y).GetConjugate();
             Signal XY = new Signal(X.Length);
-            for(int i = 0; i < X.Length; i++) {
+            for (int i = 0; i < X.Length; i++) {
                 XY[i] = X[i] * Y[i];
             }
             return InverseFFT(XY);
@@ -135,46 +130,41 @@ namespace Project3 {
             Signal signalFFT = FFT(signal);
             filterFFT = FFT(filterFFT);
             Signal result = new Signal(signal.Length);
-            for(int i = 0; i < signal.Length; i++) {
+            for (int i = 0; i < signal.Length; i++) {
                 result[i] = signalFFT[i] * filterFFT[i];
             }
             return InverseFFT(result);
-         }
-        public static Signal2D CrossConvolution2D(Signal2D signal, Signal2D filter) {
-            Signal2D filterFFT = FFT2D(filter);
-            Signal2D signalFFT = FFT2D(signal);
-            Signal2D result = filterFFT * signalFFT;
-            return InverseFFT2D(result);
         }
-        public static Signal2D CrossCorrelation2D(Signal2D signal, Signal2D filter) {
-            Console.WriteLine("cross correlation called");
-            Signal2D filterFFT = FFT2D(filter).GetConjugate();
-            Signal2D signalFFT = FFT2D(signal);
-            Signal2D result = signalFFT * filterFFT;
-            return InverseFFT2D(result);
+
+        public static Signal2D CrossCorrelation2D(Signal2D signal, Signal2D pulse) {
+            return InverseFFT2D(FFT2D(pulse).GetConjugate() * FFT2D(signal));
         }
         public static void Main(string[] args) {
-            Image a = Image.GetImageA();
-            Image b = Image.GetImageB();
-            Signal2D[] ah = b.Deconstruct();
-            for (int i = 0; i < ah.Length; i++)
-                ah[i] = FFT2D(ah[i]);
-            Image.Reconstruct(ah[0], ah[1], ah[2]).Save("fft.jpg");
-            Console.WriteLine("Loaded images");
-            Signal2D colorA = a.GetRedMatrix();
-            Signal2D colorB = b.GetRedMatrix();
+            Image signal = Image.GetSignalImage();
+            Image pulse = Image.GetPulseImage();
+            /* Signal2D[] ah = signal.Deconstruct();
+             for (int i = 0; i < ah.Length; i++)
+                 ah[i] = FFT2D(ah[i]);
+             Image.Reconstruct(ah[0], ah[1], ah[2]).Save("fft.jpg");
+             Console.WriteLine("Loaded images");*/
+            Signal2D signalColor = signal.GetRedMatrix();
+            Signal2D pulseColor = pulse.GetRedMatrix();
             Console.WriteLine("Deconstructed colors");
             Signal2D[] resultColor = new Signal2D[3];
             var time = System.Diagnostics.Stopwatch.StartNew();
-            resultColor[0] = CrossCorrelation2D(colorA, colorB).GetMagnitude();
+            resultColor[0] = CrossCorrelation2D(signalColor, pulseColor).GetMagnitude();
             time.Stop();
             resultColor[1] = resultColor[0];
             resultColor[2] = resultColor[0];
-            Console.WriteLine("Finished correlation in "+time.ElapsedMilliseconds/1000.0 +" seconds");
-            
-            Image.Reconstruct(resultColor[0], resultColor[1], resultColor[2]).Save("corr3.jpg");
+            Console.WriteLine("Finished correlation in " + time.ElapsedMilliseconds / 1000.0 + " seconds");
+
+            Image result = Image.Reconstruct(resultColor[0], resultColor[1], resultColor[2]);
             Console.WriteLine("reconstructed image");
-            Functions.PlayWav("..\\..\\DTMF\\A.wav");
+            result.Save("corr.jpg");
+            Console.WriteLine("marking red");
+            result.MarkRed().Save("red.jpg");
+
+            Console.WriteLine("reconstructed image");
             Console.WriteLine("\n\nPress any key to close");
             Console.ReadKey();
         }

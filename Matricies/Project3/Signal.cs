@@ -185,13 +185,5 @@ namespace Project3 {
                 result[i] = double.Parse(lines[i]);
             return result;
         }
-        //TODO: wat
-        public Signal GetCenterFrequency(int sampleRate) {
-            Signal result = new Signal(Length);
-            for (int k = 0; k < Length; k++) {
-                result[k] = (k * sampleRate) / (double)Length;
-            }
-            return result;
-        }
     }
 }
