@@ -2,7 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 
-namespace Project3 {
+namespace SignalProcessing {
     /// <summary>
     /// A Signal used in signal processing
     /// </summary>

@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Project3 {
+namespace SignalProcessing {
     /// <summary>
     /// Static methods used to perform Fourier Transforms and related functions
     /// </summary>

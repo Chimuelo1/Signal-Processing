@@ -1,6 +1,6 @@
 ﻿using System.Drawing;
 
-namespace Project3 {
+namespace SignalProcessing {
     /// <summary>
     /// An Image made of a Bitmap used for Signal processing of Images
     /// </summary>

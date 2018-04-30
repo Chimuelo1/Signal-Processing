@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Project3 {
+namespace SignalProcessing {
     /// <summary>
     /// A Complex Number made up of a real and imaginary part
     /// </summary>

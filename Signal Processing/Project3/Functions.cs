@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using NAudio.Wave.SampleProviders;
 using System.Linq;
 
-namespace Project3 {
+namespace SignalProcessing {
     /// <summary>
     /// Misc Functions used to generate and interact with Signals, mainly used for Signal generation
     /// </summary>
