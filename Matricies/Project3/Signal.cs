@@ -110,6 +110,12 @@ namespace Project3 {
             }
             return s;
         }
+        /// <summary>
+        /// Adds two Signals together
+        /// </summary>
+        /// <param name="a">The first Signal</param>
+        /// <param name="b">The second Signal</param>
+        /// <returns>The sum of the two Signals</returns>
         public static Signal operator +(Signal a, Signal b) {
             Signal result = new Signal(a.Length);
             for(int i = 0; i < result.Length; i++) {

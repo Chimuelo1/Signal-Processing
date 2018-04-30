@@ -1,9 +1,18 @@
 ﻿using System;
 
 namespace Project3 {
+    /// <summary>
+    /// A Complex Number made up of a real and imaginary part
+    /// </summary>
     public class ComplexNumber {
         private double real, imag;
+        /// <summary>
+        /// The real part of the Complex Number
+        /// </summary>
         public double Real { get { return real; } }
+        /// <summary>
+        /// The Imaginary part of the Complex Number
+        /// </summary>
         public double Imag { get { return imag; } }
         /// <summary>
         /// Creates a new ComplexNumber based on a real value and an imaginary value
@@ -110,6 +119,10 @@ namespace Project3 {
         public ComplexNumber Tanh() {
             return Sinh() / Cosh();
         }
+        /// <summary>
+        /// Calculates the exponential of the Complex Number
+        /// </summary>
+        /// <returns></returns>
         public ComplexNumber Exp() {
             return new ComplexNumber(Math.Exp(real) * Math.Cos(imag), Math.Exp(real) * Math.Sin(imag));
         }
@@ -159,6 +172,12 @@ namespace Project3 {
             else
                 return null;
         }
+        /// <summary>
+        /// Divides a Complex Number by a double scalar
+        /// </summary>
+        /// <param name="a">The Complex Number</param>
+        /// <param name="b">The scalar</param>
+        /// <returns>The quotient of the two</returns>
         public static ComplexNumber operator/ (ComplexNumber a, double b) {
             return new ComplexNumber(a.real / b, a.imag / b);
         }
@@ -177,6 +196,10 @@ namespace Project3 {
         public static implicit operator ComplexNumber(double d) {
             return new ComplexNumber(d, 0.0);
         }
+        /// <summary>
+        /// Allows a Complex Number to be cast to an int, only taking the real
+        /// </summary>
+        /// <param name="n">The Complex Number to be cast</param>
         public static explicit operator int(ComplexNumber n) {
             return (int)n.Real;
         }

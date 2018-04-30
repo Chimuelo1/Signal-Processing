@@ -1,9 +1,6 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Project3 {
     /// <summary>
@@ -230,8 +227,11 @@ namespace Project3 {
             }
             return result;
         }
-        public Signal2D GetMagnitude() {
-            Console.WriteLine("getting magnitude");
+        /// <summary>
+        /// Scales the Signal2D based on the max value between 0-255
+        /// </summary>
+        /// <returns>A scaled version of the Signal2D</returns>
+        public Signal2D Scale() {
             Signal2D mag = this;
             int[] maxIndex = Max();
             int[] minIndex = Min();
@@ -249,6 +249,10 @@ namespace Project3 {
             min = this[minIndex[0]][minIndex[1]].Real;
             return mag;
         }
+        /// <summary>
+        /// Gets the coordinates of the max value
+        /// </summary>
+        /// <returns>The coordinates of the max value in an array (x,y)</returns>
         public int[] Max() {
             int[] maxXY = new int[2];
             int x = 0;
@@ -267,6 +271,10 @@ namespace Project3 {
             maxXY[1] = y;
             return maxXY;
         }
+        /// <summary>
+        /// Gets the coordinates of the max value
+        /// </summary>
+        /// <returns>The coordinates of the max value in an array (x,y)</returns>
         public int[] Min() {
             int[] minXY = new int[2];
             int x = 0;

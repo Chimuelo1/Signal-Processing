@@ -112,6 +112,10 @@ namespace Project3 {
             }
             return matrix;
         }
+        /// <summary>
+        /// Gets all red values in a Signal2D of the Image
+        /// </summary>
+        /// <returns>The red values in a Signal2D</returns>
         public Signal2D GetRedMatrix() {
             Signal2D matrix = new Signal2D((int)Height, (int)Width);
             for(int i = 0; i < Height; i++) {
@@ -122,6 +126,10 @@ namespace Project3 {
             }
             return matrix;
         }
+        /// <summary>
+        /// Gets all green values in a Signal2D of the Image
+        /// </summary>
+        /// <returns>The green values in a Signal2D</returns>
         public Signal2D GetGreenMatrix() {
             Signal2D matrix = new Signal2D((int)Height, (int)Width);
             for (int i = 0; i < Height; i++) {
@@ -132,6 +140,10 @@ namespace Project3 {
             }
             return matrix;
         }
+        /// <summary>
+        /// Gets all blue values in a Signal2D of the Image
+        /// </summary>
+        /// <returns>The blue values in a Signal2D</returns>
         public Signal2D GetBlueMatrix() {
             Signal2D matrix = new Signal2D((int)Height, (int)Width);
             for (int i = 0; i < Height; i++) {
@@ -142,6 +154,10 @@ namespace Project3 {
             }
             return matrix;
         }
+        /// <summary>
+        /// Deconstructs the Image into 3 Signal2Ds: red, green, and blue
+        /// </summary>
+        /// <returns>A Signal2D array with 3 Signal2Ds for each color</returns>
         public Signal2D[] Deconstruct() {
             Signal2D[] rgb = new Signal2D[] {new Signal2D((int)Height,(int)Width), new Signal2D((int)Height, (int)Width), new Signal2D((int)Height, (int)Width) };
             for(int i = 0; i < Height; i++) {
@@ -153,6 +169,13 @@ namespace Project3 {
             }
             return rgb;
         }
+        /// <summary>
+        /// Reconstructs the Image from 3 Signal2Ds each representing R G or B
+        /// </summary>
+        /// <param name="red">The red signal</param>
+        /// <param name="green">The green signal</param>
+        /// <param name="blue">The blue signal</param>
+        /// <returns>An Image created from the rgb signals</returns>
         public static Image Reconstruct(Signal2D red, Signal2D green, Signal2D blue) {
             Image image = new Image(red.Width, red.Height);
             for(int i = 0; i < image.Height; i++) {
@@ -208,6 +231,10 @@ namespace Project3 {
             }
             return b;
         }
+        /// <summary>
+        /// Marks the values within 10% of the max as red
+        /// </summary>
+        /// <returns>The image with the 10% highest values marked red</returns>
         public Image MarkRed() {
             Image im = this;
             double index = 255.0 - (255.0 * .1);

@@ -152,7 +152,7 @@ namespace Project3 {
             Console.WriteLine("Deconstructed colors");
             Signal2D[] resultColor = new Signal2D[3];
             var time = System.Diagnostics.Stopwatch.StartNew();
-            resultColor[0] = CrossCorrelation2D(signalColor, pulseColor).GetMagnitude();
+            resultColor[0] = CrossCorrelation2D(signalColor, pulseColor).Scale();
             time.Stop();
             resultColor[1] = resultColor[0];
             resultColor[2] = resultColor[0];

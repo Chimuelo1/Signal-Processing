@@ -187,25 +187,5 @@ namespace Project3 {
         public static double CalcDistance(double velocity, double time) {
             return velocity * time / 2;
         }
-        public static void RunFilter(Signal orig, string filter) {
-            Signal filtered = null;
-            if (filter.ToLower().Equals("low"))
-                filtered = Filter.Low(orig);
-            else if (filter.ToLower().Equals("high"))
-                filtered = Filter.High(orig);
-            else if (filter.ToLower().Equals("band"))
-                filtered = Filter.Band(orig);
-            else if (filter.ToLower().Equals("notch"))
-                filtered = Filter.Notch(orig);
-            foreach(ComplexNumber n in filtered) {
-                Console.WriteLine(n.Real);
-            }
-        }
-        public static void RunDTMF(string fileName) {
-            Signal s= Signal.GetFromFile(fileName);
-            s = s.PSD();
-            foreach(ComplexNumber n in s)
-                Console.WriteLine(n.Real);
-        }
     }
 }
