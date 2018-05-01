@@ -179,17 +179,5 @@ namespace SignalProcessing {
             }
             return s;
         }
-        /// <summary>
-        /// Gets a Signal based on a file
-        /// </summary>
-        /// <param name="fileName">The file to get the Signal from</param>
-        /// <returns>The Signal from the file</returns>
-        public static Signal GetFromFile(string fileName) {
-            string[] lines = System.IO.File.ReadAllLines(fileName);
-            Signal result = new Signal(lines.Length);
-            for (int i = 0; i < lines.Length; i++)
-                result[i] = double.Parse(lines[i]);
-            return result;
-        }
     }
 }

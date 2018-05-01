@@ -97,8 +97,11 @@ namespace SignalProcessing {
         /// <returns>The Cross Correlation of the 2 Signals</returns>
         public static Signal CrossCorrelation(Signal x, Signal y) {
             Signal Y = y;
-            if (y.Length != x.Length)
+            Signal X = x;
+            if (y.Length < x.Length)
                 Y = y.PadWithZeros(x.Length);
+            if (x.Length < y.Length)
+                X = x.PadWithZeros(y.Length);
             int shiftAmt = 0;
             Signal shift = new Signal(Y.Length + shiftAmt);
             for (int i = 0; i < shift.Length; i++) {
@@ -111,7 +114,7 @@ namespace SignalProcessing {
             for (int i = 0; i < Y.Length; i++) {
                 Y[i] = shift[i];
             }
-            Signal X = FFT(x);
+            X = FFT(X);
             Y = FFT(Y).GetConjugate();
             Signal XY = new Signal(X.Length);
             for (int i = 0; i < X.Length; i++) {
@@ -135,38 +138,14 @@ namespace SignalProcessing {
             }
             return InverseFFT(result);
         }
-
+        /// <summary>
+        /// Calculates the cross correlation of 2 dimensional Signals
+        /// </summary>
+        /// <param name="signal">The response Signal</param>
+        /// <param name="pulse">The pulse Signal</param>
+        /// <returns>The cross correlation</returns>
         public static Signal2D CrossCorrelation2D(Signal2D signal, Signal2D pulse) {
             return InverseFFT2D(FFT2D(pulse).GetConjugate() * FFT2D(signal));
-        }
-        public static void Main(string[] args) {
-            Image signal = Image.GetSignalImage();
-            Image pulse = Image.GetPulseImage();
-            /* Signal2D[] ah = signal.Deconstruct();
-             for (int i = 0; i < ah.Length; i++)
-                 ah[i] = FFT2D(ah[i]);
-             Image.Reconstruct(ah[0], ah[1], ah[2]).Save("fft.jpg");
-             Console.WriteLine("Loaded images");*/
-            Signal2D signalColor = signal.GetRedMatrix();
-            Signal2D pulseColor = pulse.GetRedMatrix();
-            Console.WriteLine("Deconstructed colors");
-            Signal2D[] resultColor = new Signal2D[3];
-            var time = System.Diagnostics.Stopwatch.StartNew();
-            resultColor[0] = CrossCorrelation2D(signalColor, pulseColor).Scale();
-            time.Stop();
-            resultColor[1] = resultColor[0];
-            resultColor[2] = resultColor[0];
-            Console.WriteLine("Finished correlation in " + time.ElapsedMilliseconds / 1000.0 + " seconds");
-
-            Image result = Image.Reconstruct(resultColor[0], resultColor[1], resultColor[2]);
-            Console.WriteLine("reconstructed image");
-            result.Save("corr.jpg");
-            Console.WriteLine("marking red");
-            result.MarkRed().Save("red.jpg");
-
-            Console.WriteLine("reconstructed image");
-            Console.WriteLine("\n\nPress any key to close");
-            Console.ReadKey();
         }
     }
 }

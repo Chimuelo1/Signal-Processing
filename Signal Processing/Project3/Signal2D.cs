@@ -162,7 +162,7 @@ namespace SignalProcessing {
             return ((IEnumerable<Signal>)frequencies).GetEnumerator();
         }
         /// <summary>
-        /// Multiplies 2 Signal2Ds together 
+        /// Pointwise multiplies 2 Signal2Ds together 
         /// </summary>
         /// <param name="a">The first Signal2D</param>
         /// <param name="b">The second Signal2D</param>

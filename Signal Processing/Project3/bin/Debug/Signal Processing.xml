@@ -1,0 +1,705 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Signal Processing</name>
+    </assembly>
+    <members>
+        <member name="T:SignalProcessing.ComplexNumber">
+            <summary>
+            A Complex Number made up of a real and imaginary part
+            </summary>
+        </member>
+        <member name="P:SignalProcessing.ComplexNumber.Real">
+            <summary>
+            The real part of the Complex Number
+            </summary>
+        </member>
+        <member name="P:SignalProcessing.ComplexNumber.Imag">
+            <summary>
+            The Imaginary part of the Complex Number
+            </summary>
+        </member>
+        <member name="M:SignalProcessing.ComplexNumber.#ctor(System.Double,System.Double)">
+            <summary>
+            Creates a new ComplexNumber based on a real value and an imaginary value
+            </summary>
+            <param name="real">The real value</param>
+            <param name="imag">The imaginary value</param>
+        </member>
+        <member name="M:SignalProcessing.ComplexNumber.SetReal(System.Double)">
+            <summary>
+            Changes the real value
+            </summary>
+            <param name="real">The new real value</param>
+        </member>
+        <member name="M:SignalProcessing.ComplexNumber.SetImag(System.Double)">
+            <summary>
+            Changes the imaginary value
+            </summary>
+            <param name="imag">The new imaginary value</param>
+        </member>
+        <member name="M:SignalProcessing.ComplexNumber.ToString">
+            <summary>
+            Creates a string representation in the form: a + bi
+            </summary>
+            <returns>a + bi</returns>
+        </member>
+        <member name="M:SignalProcessing.ComplexNumber.op_Explicit(SignalProcessing.ComplexNumber)~System.Double">
+            <summary>
+            Allows a ComplexNumber to be cast to a double
+            </summary>
+            <param name="v">The ComplexNumber to cast</param>
+        </member>
+        <member name="M:SignalProcessing.ComplexNumber.GetConjugate">
+            <summary>
+            Gets the Conjugate of the Complex number
+            </summary>
+            <returns>The Conjugate of the Complex number</returns>
+        </member>
+        <member name="M:SignalProcessing.ComplexNumber.GetMagnitude">
+            <summary>
+            Gets the Magnitude of the Complex Number
+            </summary>
+            <returns>The Magnitude of the Complex Number</returns>
+        </member>
+        <member name="M:SignalProcessing.ComplexNumber.GetPhase">
+            <summary>
+            Gets the Phase of the Complex Number
+            </summary>
+            <returns>The Phase of the Complex Number</returns>
+        </member>
+        <member name="M:SignalProcessing.ComplexNumber.Sin">
+            <summary>
+            Gets the Sin of the Complex Number
+            </summary>
+            <returns>The Sin of the Complex Number</returns>
+        </member>
+        <member name="M:SignalProcessing.ComplexNumber.Cos">
+            <summary>
+            Gets the Cos of the Complex Number
+            </summary>
+            <returns>The Cos of the Complex Number</returns>
+        </member>
+        <member name="M:SignalProcessing.ComplexNumber.Tan">
+            <summary>
+            Gets the Tan of the Complex Number
+            </summary>
+            <returns>The Tan of the Complex Number</returns>
+        </member>
+        <member name="M:SignalProcessing.ComplexNumber.Sinh">
+            <summary>
+            Gets the hyperbolic Sin of the Complex Number
+            </summary>
+            <returns>The hyperbolic Sin of the Complex Number</returns>
+        </member>
+        <member name="M:SignalProcessing.ComplexNumber.Cosh">
+            <summary>
+            Gets the hyperbolic Cos of the Complex Number
+            </summary>
+            <returns>The hyperbolic Cos of the Complex Number</returns>
+        </member>
+        <member name="M:SignalProcessing.ComplexNumber.Tanh">
+            <summary>
+            Gets the hyperbolic Tan of the Complex Number
+            </summary>
+            <returns>The hyperbolic Tan of the Complex Number</returns>
+        </member>
+        <member name="M:SignalProcessing.ComplexNumber.Exp">
+            <summary>
+            Calculates the exponential of the Complex Number
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:SignalProcessing.ComplexNumber.op_Addition(SignalProcessing.ComplexNumber,SignalProcessing.ComplexNumber)">
+            <summary>
+            Adds 2 Complex Numbers together
+            </summary>
+            <param name="a">The first Complex Number</param>
+            <param name="b">The second Complex Number</param>
+            <returns>The sum of the two Complex Numbers</returns>
+        </member>
+        <member name="M:SignalProcessing.ComplexNumber.op_Subtraction(SignalProcessing.ComplexNumber,SignalProcessing.ComplexNumber)">
+            <summary>
+            Subtracts two Complex Numbers
+            </summary>
+            <param name="a">The first Complex Number</param>
+            <param name="b">The second Complex Number</param>
+            <returns></returns>
+        </member>
+        <member name="M:SignalProcessing.ComplexNumber.op_Multiply(SignalProcessing.ComplexNumber,SignalProcessing.ComplexNumber)">
+            <summary>
+            Multiplies two Complex Numbers together
+            </summary>
+            <param name="a">The first Complex Number</param>
+            <param name="b">The second Complex Number</param>
+            <returns>The product of the two Complex Numbers</returns>
+        </member>
+        <member name="M:SignalProcessing.ComplexNumber.op_Division(SignalProcessing.ComplexNumber,SignalProcessing.ComplexNumber)">
+            <summary>
+            Divides two Complex Numbers
+            </summary>
+            <param name="a">The first Complex Number</param>
+            <param name="b">The second Complex Number</param>
+            <returns>The quotient of the two Complex Numbers</returns>
+        </member>
+        <member name="M:SignalProcessing.ComplexNumber.op_Division(SignalProcessing.ComplexNumber,System.Double)">
+            <summary>
+            Divides a Complex Number by a double scalar
+            </summary>
+            <param name="a">The Complex Number</param>
+            <param name="b">The scalar</param>
+            <returns>The quotient of the two</returns>
+        </member>
+        <member name="M:SignalProcessing.ComplexNumber.op_UnaryNegation(SignalProcessing.ComplexNumber)">
+            <summary>
+            Negates a Complex Number
+            </summary>
+            <param name="a">The Complex Number</param>
+            <returns>The negated Complex Number</returns>
+        </member>
+        <member name="M:SignalProcessing.ComplexNumber.op_Implicit(System.Double)~SignalProcessing.ComplexNumber">
+            <summary>
+            Allows a double to be cast to a ComplexNumber
+            </summary>
+            <param name="d">The double to cast</param>
+        </member>
+        <member name="M:SignalProcessing.ComplexNumber.op_Explicit(SignalProcessing.ComplexNumber)~System.Int32">
+            <summary>
+            Allows a Complex Number to be cast to an int, only taking the real
+            </summary>
+            <param name="n">The Complex Number to be cast</param>
+        </member>
+        <member name="T:SignalProcessing.Filter">
+            <summary>
+            A Filter which is a subclass of Signal
+            </summary>
+        </member>
+        <member name="M:SignalProcessing.Filter.#ctor(System.Double[])">
+            <summary>
+            Creates a new Filter based on a double[]
+            </summary>
+            <param name="frequencies">The double[] to base the Filter on</param>
+        </member>
+        <member name="M:SignalProcessing.Filter.#ctor(SignalProcessing.ComplexNumber[])">
+            <summary>
+            Creates a new Filter based on a ComplexNumber[]
+            </summary>
+            <param name="frequencies">The Complex[] to base the Filter on</param>
+        </member>
+        <member name="M:SignalProcessing.Filter.#ctor(System.Int32)">
+            <summary>
+            Creates a blank Filter based on the given size
+            </summary>
+            <param name="length">The desired size of the Filter</param>
+        </member>
+        <member name="M:SignalProcessing.Filter.op_Implicit(SignalProcessing.ComplexNumber[])~SignalProcessing.Filter">
+            <summary>
+            Allows a ComplexNumber[] to be cast to a Filter
+            </summary>
+            <param name="arr">The ComplexNumber[] to cast</param>
+        </member>
+        <member name="M:SignalProcessing.Filter.op_Implicit(System.Double[])~SignalProcessing.Filter">
+            <summary>
+            Allows a double[] to be cast to a Filter
+            </summary>
+            <param name="arr">The double[] to cast</param>
+        </member>
+        <member name="M:SignalProcessing.Filter.op_Implicit(SignalProcessing.Filter)~SignalProcessing.ComplexNumber[]">
+            <summary>
+            Allows a Filter to be cast to a ComplexNumber[]
+            </summary>
+            <param name="s">The Filter to cast</param>
+        </member>
+        <member name="M:SignalProcessing.Filter.Averaging(System.Int32)">
+            <summary>
+            Creates a new averaging Filter
+            </summary>
+            <param name="p">The number of points for the filter</param>
+            <returns>The Averaging Filter</returns>
+        </member>
+        <member name="M:SignalProcessing.Filter.Low(SignalProcessing.Signal)">
+            <summary>
+            Applies a Low Pass Filter to a Signal
+            </summary>
+            <param name="s">The Signal to filter</param>
+            <returns>The Filtered Signal</returns>
+        </member>
+        <member name="M:SignalProcessing.Filter.High(SignalProcessing.Signal)">
+            <summary>
+            Applies a High Pass Filter to a Signal
+            </summary>
+            <param name="s">The Signal to filter</param>
+            <returns>The Filtered Signal</returns>
+        </member>
+        <member name="M:SignalProcessing.Filter.Band(SignalProcessing.Signal)">
+            <summary>
+            Applies a Band Filter to a Signal
+            </summary>
+            <param name="s">The Signal to filter</param>
+            <returns>The Filtered Signal</returns>
+        </member>
+        <member name="M:SignalProcessing.Filter.Notch(SignalProcessing.Signal)">
+            <summary>
+            Applies a Notch Filter to a Signal
+            </summary>
+            <param name="s">The Signal to filter</param>
+            <returns>The Filtered Signal</returns>
+        </member>
+        <member name="T:SignalProcessing.Fourier">
+            <summary>
+            Static methods used to perform Fourier Transforms and related functions
+            </summary>
+        </member>
+        <member name="M:SignalProcessing.Fourier.FFT(SignalProcessing.Signal)">
+            <summary>
+            Applies the Fast Fourier Transform algorithm to a Signal
+            </summary>
+            <param name="signal">The Signal to apply FFT to</param>
+            <returns>The Fourier Transform of a Signal</returns>
+        </member>
+        <member name="M:SignalProcessing.Fourier.FFT2D(SignalProcessing.Signal2D)">
+            <summary>
+            Applies the Fast Fourier Transform in 2 dimensions to a Signal in 2 dimensions
+            </summary>
+            <param name="signal">The Signal2D to apply FFT2D to</param>
+            <returns>The Fourier Transform of the Signal2D</returns>
+        </member>
+        <member name="M:SignalProcessing.Fourier.InverseFFT2D(SignalProcessing.Signal2D)">
+            <summary>
+            Applies the Inverted Fast Fourier Transform algorithm in 2 dimensions to a Signal
+            </summary>
+            <param name="signal">The Signal2D to apply IFFT2D to</param>
+            <returns>The Inverted Fourier Transform of the Signal2D</returns>
+        </member>
+        <member name="M:SignalProcessing.Fourier.InverseFFT(SignalProcessing.Signal)">
+            <summary>
+            Applies the Inverse Fast Fourier Transform algorithm to a Signal
+            </summary>
+            <param name="signal">The Signal to apply IFFT to</param>
+            <returns>The Inverted Fourier Transform of the Signal</returns>
+        </member>
+        <member name="M:SignalProcessing.Fourier.CrossCorrelation(SignalProcessing.Signal,SignalProcessing.Signal)">
+            <summary>
+            Applies Cross Correlation between 2 Signals
+            </summary>
+            <param name="x">The first Signal</param>
+            <param name="y">The second Signal</param>
+            <returns>The Cross Correlation of the 2 Signals</returns>
+        </member>
+        <member name="M:SignalProcessing.Fourier.CrossConvolution(SignalProcessing.Signal,SignalProcessing.Signal)">
+            <summary>
+            Applies Cross Convolution between a Signal and a Filter. Used to apply Filters to a Signal
+            </summary>
+            <param name="signal">The Signal to Filter</param>
+            <param name="filter">The Filter to be used</param>
+            <returns>The Filtered Signal</returns>
+        </member>
+        <member name="M:SignalProcessing.Fourier.CrossCorrelation2D(SignalProcessing.Signal2D,SignalProcessing.Signal2D)">
+            <summary>
+            Calculates the cross correlation of 2 dimensional Signals
+            </summary>
+            <param name="signal">The response Signal</param>
+            <param name="pulse">The pulse Signal</param>
+            <returns>The cross correlation</returns>
+        </member>
+        <member name="T:SignalProcessing.Image">
+            <summary>
+            An Image made of a Bitmap used for Signal processing of Images
+            </summary>
+        </member>
+        <member name="P:SignalProcessing.Image.BMap">
+            <summary>
+            Gets the Bitmap Image
+            </summary>
+        </member>
+        <member name="P:SignalProcessing.Image.Width">
+            <summary>
+            Gets the Width of the Image
+            </summary>
+        </member>
+        <member name="P:SignalProcessing.Image.Height">
+            <summary>
+            Gets the Height of the Image
+            </summary>
+        </member>
+        <member name="M:SignalProcessing.Image.#ctor(System.Int32,System.Int32)">
+            <summary>
+            Creates a new Image based on the given dimensions
+            </summary>
+            <param name="width">The width of the new Image</param>
+            <param name="height">The height of the new Image</param>
+        </member>
+        <member name="M:SignalProcessing.Image.#ctor(SignalProcessing.Signal2D)">
+            <summary>
+            Creates a new Image based on a Signal2D
+            </summary>
+            <param name="matrix">The Signal2D to base off of</param>
+        </member>
+        <member name="M:SignalProcessing.Image.#ctor(System.String)">
+            <summary>
+            Creates a new Image based on a Image file
+            </summary>
+            <param name="fileName">The Image file to base off of</param>
+        </member>
+        <member name="M:SignalProcessing.Image.Save(System.String)">
+            <summary>
+            Saves the Image to a file
+            </summary>
+            <param name="fileName">The name of the File to save to</param>
+        </member>
+        <member name="M:SignalProcessing.Image.Set(System.Int32,System.Int32,System.Drawing.Color)">
+            <summary>
+            Changes the color of a certain pixel in the Image
+            </summary>
+            <param name="x">The x coordinate of the Pixel</param>
+            <param name="y">The y coordinate of the Pixel</param>
+            <param name="color">The Color to change to</param>
+        </member>
+        <member name="P:SignalProcessing.Image.Item(System.Int32)">
+            <summary>
+            Gets the row at the given index
+            </summary>
+            <param name="index">The index to get</param>
+            <returns>The row at the given index</returns>
+        </member>
+        <member name="M:SignalProcessing.Image.GetMatrix">
+            <summary>
+            Gets a Signal2D representation of the Image
+            </summary>
+            <returns>The Signal2D of the Image</returns>
+        </member>
+        <member name="M:SignalProcessing.Image.GetRedMatrix">
+            <summary>
+            Gets all red values in a Signal2D of the Image
+            </summary>
+            <returns>The red values in a Signal2D</returns>
+        </member>
+        <member name="M:SignalProcessing.Image.GetGreenMatrix">
+            <summary>
+            Gets all green values in a Signal2D of the Image
+            </summary>
+            <returns>The green values in a Signal2D</returns>
+        </member>
+        <member name="M:SignalProcessing.Image.GetBlueMatrix">
+            <summary>
+            Gets all blue values in a Signal2D of the Image
+            </summary>
+            <returns>The blue values in a Signal2D</returns>
+        </member>
+        <member name="M:SignalProcessing.Image.Deconstruct">
+            <summary>
+            Deconstructs the Image into 3 Signal2Ds: red, green, and blue
+            </summary>
+            <returns>A Signal2D array with 3 Signal2Ds for each color</returns>
+        </member>
+        <member name="M:SignalProcessing.Image.Reconstruct(SignalProcessing.Signal2D,SignalProcessing.Signal2D,SignalProcessing.Signal2D)">
+            <summary>
+            Reconstructs the Image from 3 Signal2Ds each representing R G or B
+            </summary>
+            <param name="red">The red signal</param>
+            <param name="green">The green signal</param>
+            <param name="blue">The blue signal</param>
+            <returns>An Image created from the rgb signals</returns>
+        </member>
+        <member name="M:SignalProcessing.Image.GetSignalImage">
+            <summary>
+            Creates the Image A 
+            </summary>
+            <returns>Image A</returns>
+        </member>
+        <member name="M:SignalProcessing.Image.GetPulseImage">
+            <summary>
+            Creates the Image B
+            </summary>
+            <returns>Image B</returns>
+        </member>
+        <member name="M:SignalProcessing.Image.MarkRed">
+            <summary>
+            Marks the values within 10% of the max as red
+            </summary>
+            <returns>The image with the 10% highest values marked red</returns>
+        </member>
+        <member name="T:SignalProcessing.Signal">
+            <summary>
+            A Signal used in signal processing
+            </summary>
+        </member>
+        <member name="P:SignalProcessing.Signal.Frequencies">
+            <summary>
+            Gets the array of Complex numbers making up the Signal
+            </summary>
+        </member>
+        <member name="P:SignalProcessing.Signal.Length">
+            <summary>
+            Gets the length of the Signal
+            </summary>
+        </member>
+        <member name="M:SignalProcessing.Signal.#ctor(SignalProcessing.ComplexNumber[])">
+            <summary>
+            Creates a Signal based on a ComplexNumber[]
+            </summary>
+            <param name="frequencies">The Complex number[] to make the Signal</param>
+        </member>
+        <member name="M:SignalProcessing.Signal.#ctor(System.Double[])">
+            <summary>
+            Creates a Signal based on a double[]
+            </summary>
+            <param name="frequencies">The double[] to make the Signal</param>
+        </member>
+        <member name="M:SignalProcessing.Signal.#ctor(System.Int32)">
+            <summary>
+            Creates a blank Signal of the given size
+            </summary>
+            <param name="num">The size to make the Signal</param>
+        </member>
+        <member name="M:SignalProcessing.Signal.op_Multiply(SignalProcessing.Signal,SignalProcessing.Signal)">
+            <summary>
+            Multiplies 2 Signals together
+            </summary>
+            <param name="a">The first signal</param>
+            <param name="b">The second signal</param>
+            <returns></returns>
+        </member>
+        <member name="P:SignalProcessing.Signal.Item(System.Int32)">
+            <summary>
+            Gets a frequency in the Signal
+            </summary>
+            <param name="index">The index to get</param>
+            <returns>The frequency at the given index</returns>
+        </member>
+        <member name="M:SignalProcessing.Signal.op_Implicit(SignalProcessing.ComplexNumber[])~SignalProcessing.Signal">
+            <summary>
+            Allows a ComplexNumber[] to be cast to a Signal
+            </summary>
+            <param name="arr">The ComplexNumber[] to cast</param>
+        </member>
+        <member name="M:SignalProcessing.Signal.op_Implicit(System.Double[])~SignalProcessing.Signal">
+            <summary>
+            Allows a double[] to be cast to a Signal
+            </summary>
+            <param name="arr">The double[] to cast</param>
+        </member>
+        <member name="M:SignalProcessing.Signal.op_Implicit(SignalProcessing.Signal)~SignalProcessing.ComplexNumber[]">
+            <summary>
+            Allows a Signal to be cast to a ComplexNumber[]
+            </summary>
+            <param name="s">The Signal to cast</param>
+        </member>
+        <member name="M:SignalProcessing.Signal.op_Explicit(SignalProcessing.Signal)~System.Double[]">
+            <summary>
+            Allows a Signal to be cast to a double[]
+            </summary>
+            <param name="s">The Signal to cast</param>
+        </member>
+        <member name="M:SignalProcessing.Signal.op_Division(SignalProcessing.Signal,SignalProcessing.ComplexNumber)">
+            <summary>
+            Divides a Signal by a Complex Number
+            </summary>
+            <param name="signal">The Signal to divide</param>
+            <param name="scalar">The Complex Number scalar to divide by</param>
+            <returns></returns>
+        </member>
+        <member name="M:SignalProcessing.Signal.op_Addition(SignalProcessing.Signal,SignalProcessing.Signal)">
+            <summary>
+            Adds two Signals together
+            </summary>
+            <param name="a">The first Signal</param>
+            <param name="b">The second Signal</param>
+            <returns>The sum of the two Signals</returns>
+        </member>
+        <member name="M:SignalProcessing.Signal.GetEnumerator">
+            <summary>
+            Gets the Enumerator for the Signal
+            </summary>
+            <returns>The Enumerator for the Signal</returns>
+        </member>
+        <member name="M:SignalProcessing.Signal.System#Collections#IEnumerable#GetEnumerator">
+            <summary>
+            Gets the Enumerator for the Signal
+            </summary>
+            <returns>The Enumerator for the Signal</returns>
+        </member>
+        <member name="M:SignalProcessing.Signal.PSD">
+            <summary>
+            Calculates the Power Spectral Density of the Signal
+            </summary>
+            <returns>The Power Spectral Density of the Signal</returns>
+        </member>
+        <member name="M:SignalProcessing.Signal.PadWithZeros(System.Int32)">
+            <summary>
+            Pads the Signal with 0s on either end to make the signal the desired length
+            </summary>
+            <param name="desiredLength">The desired length of the Signal</param>
+            <returns>The Signal padded with 0s</returns>
+        </member>
+        <member name="M:SignalProcessing.Signal.GetConjugate">
+            <summary>
+            Gets the Conjugate for each frequency in the Signal
+            </summary>
+            <returns>A Signal made of the Conjugate of each frequency</returns>
+        </member>
+        <member name="T:SignalProcessing.Signal2D">
+            <summary>
+            A 2 dimensional Signal
+            </summary>
+        </member>
+        <member name="P:SignalProcessing.Signal2D.Frequencies">
+            <summary>
+            Gets the frequencies of the Signal
+            </summary>
+        </member>
+        <member name="P:SignalProcessing.Signal2D.Width">
+            <summary>
+            Gets the width of the Signal
+            </summary>
+        </member>
+        <member name="P:SignalProcessing.Signal2D.Height">
+            <summary>
+            Gets the height of the Signal
+            </summary>
+        </member>
+        <member name="M:SignalProcessing.Signal2D.#ctor(SignalProcessing.Signal[])">
+            <summary>
+            Creates a new 2D Signal based on an array of Signals
+            </summary>
+            <param name="signal">The Signal[] to base the Signal2D off of</param>
+        </member>
+        <member name="M:SignalProcessing.Signal2D.#ctor(SignalProcessing.ComplexNumber[][])">
+            <summary>
+            Creates a new 2D Signal based on a ComplexNumber[][]
+            </summary>
+            <param name="signal">The ComplexNumber[][] to base the Signal2D off of</param>
+        </member>
+        <member name="M:SignalProcessing.Signal2D.#ctor(System.Double[][])">
+            <summary>
+            Creates a new 2D Signal based on a double[][]
+            </summary>
+            <param name="signal">The double[][] to base the Signal2D off of</param>
+        </member>
+        <member name="M:SignalProcessing.Signal2D.#ctor(System.Int32,System.Int32)">
+            <summary>
+            Creates an empty Signal2D with the given dimensions
+            </summary>
+            <param name="height">The height to make the Signal</param>
+            <param name="width">The width to make the Signal</param>
+        </member>
+        <member name="P:SignalProcessing.Signal2D.Item(System.Int32)">
+            <summary>
+            Gets the Signal at the given index
+            </summary>
+            <param name="index">The index of the Signal</param>
+            <returns>The Signal at the given index</returns>
+        </member>
+        <member name="M:SignalProcessing.Signal2D.GetConjugate">
+            <summary>
+            Gets the Conjugate for each frequency in the Signal2D
+            </summary>
+            <returns>A new Signal2D containing the Conjugate for each frequency</returns>
+        </member>
+        <member name="M:SignalProcessing.Signal2D.GetColumn(System.Int32)">
+            <summary>
+            Gets a single Column of the Signal2D
+            </summary>
+            <param name="index">The index of the column to get</param>
+            <returns>A Signal representing the column</returns>
+        </member>
+        <member name="M:SignalProcessing.Signal2D.op_Implicit(SignalProcessing.ComplexNumber[][])~SignalProcessing.Signal2D">
+            <summary>
+            Allows a ComplexNumber[][] to be cast to a Signal2D
+            </summary>
+            <param name="mat">The ComplexNumber[][] to cast</param>
+        </member>
+        <member name="M:SignalProcessing.Signal2D.op_Implicit(System.Double[][])~SignalProcessing.Signal2D">
+            <summary>
+            Allows a double[][] to be cast to a Signal2D
+            </summary>
+            <param name="mat">The double[][] to cast</param>
+        </member>
+        <member name="M:SignalProcessing.Signal2D.op_Implicit(SignalProcessing.Signal2D)~SignalProcessing.Signal[]">
+            <summary>
+            Allows a Signal2D to be cast to a Signal[]
+            </summary>
+            <param name="signal">The Signal2D to cast</param>
+        </member>
+        <member name="M:SignalProcessing.Signal2D.op_Implicit(SignalProcessing.Signal2D)~SignalProcessing.ComplexNumber[][]">
+            <summary>
+            Allows a Signal2D to be cast to a ComplexNumber[][]
+            </summary>
+            <param name="signal">The Signal2D to cast</param>
+        </member>
+        <member name="M:SignalProcessing.Signal2D.op_Explicit(SignalProcessing.Signal2D)~System.Double[][]">
+            <summary>
+            Allows a Signal2D to be cast to a double[][]
+            </summary>
+            <param name="signal">The Signal2D to cast</param>
+        </member>
+        <member name="M:SignalProcessing.Signal2D.op_Implicit(SignalProcessing.Image)~SignalProcessing.Signal2D">
+            <summary>
+            Allows an Image to be cast to a Signal2D
+            </summary>
+            <param name="image">The image to cast</param>
+        </member>
+        <member name="M:SignalProcessing.Signal2D.GetEnumerator">
+            <summary>
+            Gets the Enumerator of the Signal2D
+            </summary>
+            <returns>The Signal2D Enumerator</returns>
+        </member>
+        <member name="M:SignalProcessing.Signal2D.System#Collections#IEnumerable#GetEnumerator">
+            <summary>
+            Gets the Enumerator of the Signal2D
+            </summary>
+            <returns>The Signal2D Enumerator</returns>
+        </member>
+        <member name="M:SignalProcessing.Signal2D.op_Multiply(SignalProcessing.Signal2D,SignalProcessing.Signal2D)">
+            <summary>
+            Pointwise multiplies 2 Signal2Ds together 
+            </summary>
+            <param name="a">The first Signal2D</param>
+            <param name="b">The second Signal2D</param>
+            <returns>The product of the 2 Signal2Ds</returns>
+        </member>
+        <member name="M:SignalProcessing.Signal2D.op_Multiply(SignalProcessing.Signal2D,SignalProcessing.ComplexNumber)">
+            <summary>
+            Multiplies a Signal2D by a scalar
+            </summary>
+            <param name="a">The Signal2D to multiply</param>
+            <param name="scalar">The scalar to multiply</param>
+            <returns>The product of the Signal2D and the scalar</returns>
+        </member>
+        <member name="M:SignalProcessing.Signal2D.op_Addition(SignalProcessing.Signal2D,SignalProcessing.Signal2D)">
+            <summary>
+            Adds 2 Signal2Ds together
+            </summary>
+            <param name="a">The first Signal2D</param>
+            <param name="b">The second Signal2D</param>
+            <returns>The sum of the two Signal2Ds</returns>
+        </member>
+        <member name="M:SignalProcessing.Signal2D.op_Subtraction(SignalProcessing.Signal2D,SignalProcessing.Signal2D)">
+            <summary>
+            Subtracts a Signal2D from another
+            </summary>
+            <param name="a">The first Signal2D</param>
+            <param name="b">The second Signal2D</param>
+            <returns>The difference of the two Signals</returns>
+        </member>
+        <member name="M:SignalProcessing.Signal2D.Scale">
+            <summary>
+            Scales the Signal2D based on the max value between 0-255
+            </summary>
+            <returns>A scaled version of the Signal2D</returns>
+        </member>
+        <member name="M:SignalProcessing.Signal2D.Max">
+            <summary>
+            Gets the coordinates of the max value
+            </summary>
+            <returns>The coordinates of the max value in an array (x,y)</returns>
+        </member>
+        <member name="M:SignalProcessing.Signal2D.Min">
+            <summary>
+            Gets the coordinates of the max value
+            </summary>
+            <returns>The coordinates of the max value in an array (x,y)</returns>
+        </member>
+    </members>
+</doc>
